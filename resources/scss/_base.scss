@@ -1,0 +1,53 @@
+@use 'variables' as *;
+
+// ─── Reset & base ─────────────────────────────────────────────────────────────
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    color: $color-text;
+    background-color: $color-bg;
+}
+
+// ─── Tipografia ───────────────────────────────────────────────────────────────
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: $spacing-unit * 0.75;
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }
+
+p { margin-bottom: $spacing-unit; }
+
+a {
+    color: $color-primary;
+    text-decoration: underline;
+
+    &:hover { opacity: 0.8; }
+}
+
+ul, ol {
+    padding-left: $spacing-unit * 1.5;
+    margin-bottom: $spacing-unit;
+}
+
+time {
+    font-size: 0.875rem;
+    color: $color-text-muted;
+}

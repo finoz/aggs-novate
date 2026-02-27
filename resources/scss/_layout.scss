@@ -1,0 +1,139 @@
+@use 'variables' as *;
+@use 'sass:color';
+
+// ─── Container ────────────────────────────────────────────────────────────────
+.container {
+    max-width: $container-max-width;
+    margin: 0 auto;
+    padding: 0 $spacing-unit;
+}
+
+// ─── Header ───────────────────────────────────────────────────────────────────
+.site-header {
+    background-color: $color-primary;
+    color: white;
+    padding: $spacing-unit 0;
+
+    .container {
+        display: flex;
+        align-items: center;
+        gap: $spacing-unit * 2;
+    }
+}
+
+.site-logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+// ─── Nav ──────────────────────────────────────────────────────────────────────
+.site-nav {
+    display: flex;
+    gap: $spacing-unit;
+    flex-wrap: wrap;
+
+    a {
+        color: rgba(white, 0.85);
+        text-decoration: none;
+        font-size: 0.9375rem;
+        padding: 0.25rem 0;
+        border-bottom: 2px solid transparent;
+        transition: color 0.2s, border-color 0.2s;
+
+        &:hover,
+        &.active {
+            color: white;
+            border-bottom-color: white;
+        }
+    }
+}
+
+// ─── Main ─────────────────────────────────────────────────────────────────────
+.site-main {
+    padding: $spacing-unit * 2 0;
+    min-height: 60vh;
+}
+
+// ─── Footer ───────────────────────────────────────────────────────────────────
+.site-footer {
+    background-color: $color-bg-light;
+    border-top: 1px solid $color-border;
+    padding: $spacing-unit 0;
+    font-size: 0.875rem;
+    color: $color-text-muted;
+    text-align: center;
+}
+
+// ─── Button ───────────────────────────────────────────────────────────────────
+.btn {
+    display: inline-block;
+    padding: 0.5rem 1.25rem;
+    border-radius: 4px;
+    font-size: 0.9375rem;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid $color-border;
+    background: white;
+    color: $color-text;
+    transition: background 0.15s, border-color 0.15s;
+
+    &:hover {
+        background: $color-bg-light;
+        opacity: 1;
+    }
+
+    &--primary {
+        background: $color-primary;
+        border-color: $color-primary;
+        color: white;
+
+        &:hover {
+            background: color.adjust($color-primary, $lightness: -8%);
+            border-color: color.adjust($color-primary, $lightness: -8%);
+        }
+    }
+}
+
+// ─── Hero ─────────────────────────────────────────────────────────────────────
+.hero {
+    margin-bottom: $spacing-unit * 2;
+
+    h1 { font-size: 2.5rem; }
+
+    &__lead {
+        font-size: 1.25rem;
+        color: $color-text-muted;
+    }
+}
+
+// ─── Page content ─────────────────────────────────────────────────────────────
+.page-content {
+    max-width: 680px;
+}
+
+// ─── Alert ────────────────────────────────────────────────────────────────────
+.alert {
+    padding: $spacing-unit;
+    border-radius: 4px;
+    margin-bottom: $spacing-unit;
+
+    &--success {
+        background: color.adjust($color-success, $lightness: 60%);
+        border-left: 4px solid $color-success;
+        color: color.adjust($color-success, $lightness: -10%);
+    }
+
+    &--error {
+        background: color.adjust($color-error, $lightness: 55%);
+        border-left: 4px solid $color-error;
+        color: color.adjust($color-error, $lightness: -5%);
+    }
+}
+
+.empty-state {
+    color: $color-text-muted;
+    font-style: italic;
+}
