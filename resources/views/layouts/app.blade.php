@@ -15,10 +15,18 @@
             {{ config('app.name') }}
         </a>
         <nav class="site-nav">
-            <a href="{{ route('home') }}" @class(['active' => request()->routeIs('home')])>Home</a>
-            <a href="{{ route('chi-siamo') }}" @class(['active' => request()->routeIs('chi-siamo')])>Chi siamo</a>
-            <a href="{{ route('avvisi.index') }}" @class(['active' => request()->routeIs('avvisi.*')])>Avvisi</a>
-            <a href="{{ route('contatti') }}" @class(['active' => request()->routeIs('contatti')])>Contatti</a>
+            @foreach($navPages as $navPage)
+                @if($navPage->slug === 'home')
+                    <a href="{{ route('home') }}" @class(['active' => request()->routeIs('home')])>
+                        {{ $navPage->titolo }}
+                    </a>
+                @else
+                    <a href="{{ route('page.show', $navPage->slug) }}"
+                       @class(['active' => request()->is($navPage->slug)])>
+                        {{ $navPage->titolo }}
+                    </a>
+                @endif
+            @endforeach
         </nav>
     </div>
 </header>

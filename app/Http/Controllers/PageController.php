@@ -2,17 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Page;
 use Illuminate\View\View;
 
 class PageController extends Controller
 {
-    public function chiSiamo(): View
+    public function home(): View
     {
-        return view('pages.chi-siamo');
+        $page = Page::where('slug', 'home')->firstOrFail();
+
+        return view('pages.show', compact('page'));
     }
 
-    public function contatti(): View
+    public function show(string $slug): View
     {
-        return view('pages.contatti');
+        $page = Page::where('slug', $slug)->firstOrFail();
+
+        abort_unless($page->pubblicata, 404);
+
+        return view('pages.show', compact('page'));
     }
 }

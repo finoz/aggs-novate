@@ -232,3 +232,435 @@ textarea.form-control { resize: vertical; }
 
     &--danger { color: $color-error; }
 }
+
+// ─── Form wide (per pagine con editor) ────────────────────────────────────────
+.admin-form--wide {
+    max-width: 900px;
+}
+
+.form-row {
+    display: flex;
+    gap: $spacing-unit * 1.5;
+    align-items: flex-start;
+}
+
+.form-control--narrow {
+    max-width: 100px;
+}
+
+.form-hint {
+    display: block;
+    font-size: 0.8125rem;
+    color: $color-text-muted;
+    margin-top: 0.25rem;
+}
+
+.slug-preview {
+    display: flex;
+    align-items: center;
+    border: 1px solid $color-border;
+    border-radius: 4px;
+    overflow: hidden;
+
+    &__base {
+        padding: 0.5rem 0.75rem;
+        background: $color-bg-light;
+        border-right: 1px solid $color-border;
+        font-size: 0.875rem;
+        color: $color-text-muted;
+        white-space: nowrap;
+    }
+
+    .form-control {
+        border: none;
+        border-radius: 0;
+        flex: 1;
+
+        &:focus { box-shadow: none; }
+    }
+}
+
+// ─── TipTap Toolbar ───────────────────────────────────────────────────────────
+.tiptap-toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2px;
+    padding: 0.4rem 0.5rem;
+    background: $color-bg-light;
+    border-bottom: 1px solid $color-border;
+    border-radius: 4px 4px 0 0;
+
+    button {
+        background: none;
+        border: 1px solid transparent;
+        border-radius: 3px;
+        cursor: pointer;
+        padding: 0.2rem 0.5rem;
+        font-size: 0.875rem;
+        color: $color-text;
+        line-height: 1.4;
+        min-width: 28px;
+
+        &:hover { background: $color-border; }
+        &.is-active {
+            background: $color-primary;
+            color: white;
+            border-color: $color-primary;
+        }
+    }
+
+    &__sep {
+        width: 1px;
+        height: 1.25rem;
+        background: $color-border;
+        margin: 0 3px;
+    }
+}
+
+// ─── TipTap Editor ────────────────────────────────────────────────────────────
+.tiptap-editor {
+    border: 1px solid $color-border;
+    border-radius: 4px;
+    background: white;
+    min-height: 320px;
+    cursor: text;
+
+    &:focus-within {
+        border-color: $color-primary;
+        box-shadow: 0 0 0 2px rgba($color-primary, 0.15);
+    }
+
+    // L'elemento .tiptap è l'area editabile generata da TipTap
+    .tiptap {
+        padding: $spacing-unit;
+        outline: none;
+        min-height: 280px;
+
+        // Tipografia nell'editor
+        h1 { font-size: 1.75rem; margin-bottom: 0.5rem; }
+        h2 { font-size: 1.375rem; margin-bottom: 0.5rem; }
+        h3 { font-size: 1.125rem; margin-bottom: 0.5rem; }
+        p  { margin-bottom: 0.75rem; }
+        ul, ol { padding-left: 1.5rem; margin-bottom: 0.75rem; }
+        li { margin-bottom: 0.25rem; }
+        a  { color: $color-primary; text-decoration: underline; }
+        blockquote {
+            border-left: 3px solid $color-border;
+            padding-left: 1rem;
+            color: $color-text-muted;
+            font-style: italic;
+            margin: 0.75rem 0;
+        }
+        code {
+            background: $color-bg-light;
+            padding: 0.1em 0.35em;
+            border-radius: 3px;
+            font-size: 0.875em;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid $color-border;
+            margin: 1rem 0;
+        }
+
+        // Placeholder
+        &.is-editor-empty:first-child::before {
+            content: attr(data-placeholder);
+            color: $color-text-muted;
+            pointer-events: none;
+            float: left;
+            height: 0;
+        }
+    }
+}
+
+// ─── Block Editor ─────────────────────────────────────────────────────────────
+
+.block-editor {
+    border: 1px solid $color-border;
+    border-radius: 6px;
+    background: $color-bg-light;
+    padding: $spacing-unit * 0.75;
+}
+
+.block-list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-unit * 0.5;
+    min-height: 48px;
+
+    &--nested {
+        min-height: 40px;
+        padding: 0.25rem;
+        background: rgba(white, 0.6);
+        border-radius: 4px;
+    }
+}
+
+.block-card {
+    background: white;
+    border: 1px solid $color-border;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+
+    &--ghost { opacity: 0.4; border-style: dashed; }
+    &--dragging { box-shadow: 0 4px 12px rgba(0,0,0,.15); }
+
+    &__header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.4rem 0.75rem;
+        background: $color-bg-light;
+        border-bottom: 1px solid $color-border;
+        user-select: none;
+    }
+
+    &__drag {
+        cursor: grab;
+        font-size: 1.1rem;
+        color: $color-text-muted;
+        line-height: 1;
+        padding: 0 0.2rem;
+        &:active { cursor: grabbing; }
+    }
+
+    &__label {
+        flex: 1;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: $color-text-muted;
+    }
+
+    &__delete {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.25rem;
+        line-height: 1;
+        color: $color-text-muted;
+        padding: 0 0.2rem;
+        &:hover { color: $color-error; }
+    }
+
+    &__body {
+        padding: $spacing-unit * 0.75;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+// ─── Block fields ─────────────────────────────────────────────────────────────
+
+.block-fields-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.block-input {
+    padding: 0.35rem 0.6rem;
+    border: 1px solid $color-border;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    background: white;
+    color: $color-text;
+    width: 100%;
+
+    &:focus {
+        outline: none;
+        border-color: $color-primary;
+        box-shadow: 0 0 0 2px rgba($color-primary, 0.12);
+    }
+}
+
+select.block-input { width: auto; flex-shrink: 0; }
+
+.block-tiptap {
+    border: 1px solid $color-border;
+    border-radius: 4px;
+    background: white;
+    min-height: 120px;
+    cursor: text;
+
+    &:focus-within {
+        border-color: $color-primary;
+        box-shadow: 0 0 0 2px rgba($color-primary, 0.12);
+    }
+
+    .tiptap {
+        padding: 0.5rem 0.75rem;
+        outline: none;
+        min-height: 100px;
+
+        p { margin-bottom: 0.5rem; &:last-child { margin-bottom: 0; } }
+        h1 { font-size: 1.5rem; }
+        h2 { font-size: 1.25rem; }
+        h3 { font-size: 1.1rem; }
+        ul, ol { padding-left: 1.5rem; }
+        a { color: $color-primary; text-decoration: underline; }
+    }
+}
+
+// ─── Block advanced options ───────────────────────────────────────────────────
+
+.block-advanced {
+    summary {
+        cursor: pointer;
+        font-size: 0.78rem;
+        color: $color-text-muted;
+        user-select: none;
+        &:hover { color: $color-text; }
+    }
+
+    &__fields {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+
+        label {
+            font-size: 0.75rem;
+            color: $color-text-muted;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+    }
+}
+
+// ─── Image block ──────────────────────────────────────────────────────────────
+
+.block-image-wrap {
+    border: 1px dashed $color-border;
+    border-radius: 4px;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: $color-bg-light;
+
+    img.block-image-preview {
+        max-width: 100%;
+        max-height: 240px;
+        object-fit: contain;
+    }
+}
+
+.block-image-placeholder {
+    color: $color-text-muted;
+    font-size: 0.85rem;
+}
+
+.block-upload-btn {
+    display: inline-block;
+    cursor: pointer;
+    padding: 0.3rem 0.75rem;
+    border: 1px solid $color-border;
+    border-radius: 4px;
+    background: white;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    &:hover { background: $color-bg-light; }
+}
+
+.block-upload-status {
+    font-size: 0.8rem;
+    color: $color-text-muted;
+}
+
+// ─── Columns block editor ─────────────────────────────────────────────────────
+
+.block-columns-editor {
+    display: flex;
+    gap: $spacing-unit * 0.75;
+    align-items: flex-start;
+}
+
+.block-column-editor {
+    flex: 1;
+    border: 1px solid $color-border;
+    border-radius: 4px;
+    overflow: hidden;
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.3rem 0.5rem;
+        background: $color-bg-light;
+        border-bottom: 1px solid $color-border;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: $color-text-muted;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+}
+
+.block-column-add-buttons {
+    display: flex;
+    gap: 3px;
+}
+
+.block-column-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    margin-top: 0.25rem;
+}
+
+// ─── Add block buttons ────────────────────────────────────────────────────────
+
+.block-add-buttons {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: $spacing-unit * 0.75;
+    padding-top: $spacing-unit * 0.5;
+    border-top: 1px solid $color-border;
+
+    &__label {
+        font-size: 0.8rem;
+        color: $color-text-muted;
+        margin-right: 0.25rem;
+    }
+}
+
+.block-add-btn {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid $color-border;
+    border-radius: 20px;
+    background: white;
+    font-size: 0.8rem;
+    cursor: pointer;
+    color: $color-text;
+    transition: background 0.15s, border-color 0.15s;
+
+    &:hover {
+        background: $color-primary;
+        border-color: $color-primary;
+        color: white;
+    }
+
+    &--sm {
+        padding: 0.15rem 0.5rem;
+        font-size: 0.7rem;
+        border-radius: 12px;
+    }
+
+    &--danger {
+        &:hover {
+            background: $color-error;
+            border-color: $color-error;
+        }
+    }
+}

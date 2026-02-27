@@ -1,21 +1,14 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
-use App\Http\Controllers\Admin\AvvisoController as AdminAvvisoController;
-use App\Http\Controllers\AvvisoController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\PageController as AdminPageController;
+use App\Http\Controllers\Admin\UploadController;
 use App\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Route;
 
 // ─── Sito pubblico ────────────────────────────────────────────────────────────
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
-
-Route::get('/chi-siamo', [PageController::class, 'chiSiamo'])->name('chi-siamo');
-Route::get('/contatti', [PageController::class, 'contatti'])->name('contatti');
-
-Route::get('/avvisi', [AvvisoController::class, 'index'])->name('avvisi.index');
-Route::get('/avvisi/{avviso}', [AvvisoController::class, 'show'])->name('avvisi.show');
+Route::get('/', [PageController::class, 'home'])->name('home');
 
 // ─── Admin: autenticazione ────────────────────────────────────────────────────
 
@@ -26,7 +19,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     // ─── Admin: area protetta ─────────────────────────────────────────────────
     Route::middleware('auth')->group(function () {
-        Route::get('/', fn () => redirect()->route('admin.avvisi.index'));
-        Route::resource('avvisi', AdminAvvisoController::class);
+        Route::get('/', fn () => redirect()->route('admin.pages.index'));
+        Route::resource('pages', AdminPageController::class);
+        Route::post('upload', [UploadController::class, 'store'])->name('upload');
     });
 });
+
+// ─── Pagine dinamiche (catch-all — deve essere l'ultima route) ────────────────
+
+Route::get('/{slug}', [PageController::class, 'show'])->name('page.show');

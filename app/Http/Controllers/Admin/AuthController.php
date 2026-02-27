@@ -13,7 +13,7 @@ class AuthController extends Controller
     public function showLogin(): View|RedirectResponse
     {
         if (Auth::check()) {
-            return redirect()->route('admin.avvisi.index');
+            return redirect()->route('admin.pages.index');
         }
 
         return view('admin.login');
@@ -29,7 +29,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, remember: true)) {
             $request->session()->regenerate();
 
-            return redirect()->intended(route('admin.avvisi.index'));
+            return redirect()->intended(route('admin.pages.index'));
         }
 
         return back()->withErrors([

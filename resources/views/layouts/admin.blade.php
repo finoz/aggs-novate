@@ -10,12 +10,12 @@
 
 <header class="admin-header">
     <div class="container">
-        <a href="{{ route('admin.avvisi.index') }}" class="admin-logo">
+        <a href="{{ route('admin.pages.index') }}" class="admin-logo">
             {{ config('app.name') }} — Admin
         </a>
         <nav class="admin-nav">
-            <a href="{{ route('admin.avvisi.index') }}" @class(['active' => request()->routeIs('admin.avvisi.*')])>
-                Avvisi
+            <a href="{{ route('admin.pages.index') }}" @class(['active' => request()->routeIs('admin.pages.*')])>
+                Pagine
             </a>
         </nav>
         <form method="POST" action="{{ route('admin.logout') }}" class="admin-logout">
