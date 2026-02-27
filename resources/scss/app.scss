@@ -1,0 +1,10 @@
+// Con il modulo @use di SCSS, le variabili NON si propagano automaticamente
+// ai partial: ogni file che usa variabili deve dichiararle esplicitamente.
+// Per semplicità in questo progetto usiamo ancora @import (funziona, ma verrà
+// rimosso in future versioni di Sass — migrare a @use quando il progetto cresce).
+
+@import 'variables';
+@import 'base';
+@import 'layout';
+@import 'avvisi';
+@import 'admin';

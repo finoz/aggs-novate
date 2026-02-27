@@ -1,0 +1,23 @@
+// ─── Colori ───────────────────────────────────────────────────────────────────
+$color-primary:    #1a3a5c;
+$color-secondary:  #2e7d32;
+$color-accent:     #e65100;
+$color-text:       #212121;
+$color-text-muted: #757575;
+$color-bg:         #ffffff;
+$color-bg-light:   #f5f5f5;
+$color-border:     #e0e0e0;
+$color-success:    #2e7d32;
+$color-error:      #c62828;
+
+// ─── Tipografia ───────────────────────────────────────────────────────────────
+$font-family-base: system-ui, -apple-system, 'Segoe UI', sans-serif;
+$font-size-base:   1rem;      // 16px
+$line-height-base: 1.6;
+
+// ─── Layout ───────────────────────────────────────────────────────────────────
+$container-max-width: 960px;
+$spacing-unit:        1rem;
+
+// ─── Breakpoints ──────────────────────────────────────────────────────────────
+$bp-md: 768px;
