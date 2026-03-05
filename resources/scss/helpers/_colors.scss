@@ -1,0 +1,19 @@
+/* PALETTE */
+/* dove possibile riprendiamo i colori settati come CSS vars in theme.json per non duplicare valori */
+:root {
+  --color-regal-navy: #1F3770;
+  --color-old-gold: ##D7BF23;
+  --color-platinum: #F0F0F0;
+  --color-black: #212121;
+  --color-white: #FFFFFF;
+
+
+  --color-primary: var(--color-regal-navy);
+  --color-secondary: var(--color-old-gold);
+  --color-text: var(--color-black);
+  --color-accent: var(--color-old-gold);
+  --color-text-inverted: var(--color-white);
+  --color-bg-default: var(--color-white);
+  --color-bg-secondary: var(--color-platinum);
+  --color-bg-inverted: var(--color-regal-navy);
+} 

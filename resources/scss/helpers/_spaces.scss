@@ -1,0 +1,14 @@
+@use 'breakpoints' as *;
+
+.sitemain,
+.is-root-container,
+.siteheader,
+.sitefooter {
+	> * {
+		padding-inline: 1rem;
+		max-width: var(--max-width);
+		@include breakpoint(tablet-landscape) {
+			padding-inline: 3rem;
+		}
+	}
+}

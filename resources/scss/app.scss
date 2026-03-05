@@ -1,6 +1,6 @@
-// Con @use ogni partial è un modulo isolato: le variabili vanno dichiarate
-// esplicitamente in ogni file che le usa (vedi @use 'variables' as * nei partial).
-@use 'variables' as *;
+@use '/node_modules/modern-normalize/modern-normalize.css';
+
+@use 'helpers' as *;
 @use 'base';
 @use 'layout';
 @use 'blocks';

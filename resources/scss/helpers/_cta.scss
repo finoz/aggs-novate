@@ -1,0 +1,114 @@
+@use 'sass:math';
+@use 'colors' as *;
+@use 'typography' as *;
+@use 'icons' as *;
+@use 'breakpoints' as *;
+
+%cta-reset {
+    margin: 0;
+    overflow: visible;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    border: 0 none;
+    border-radius: 0;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+%cta-main {
+    @extend %cta-reset;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    text-align: center;
+    @extend %font-primary-std;
+    padding: 0.4rem 2rem;
+    min-height: 5.2rem;
+    transition: all 0.3s ease;
+    border-radius: 5rem;
+    @include breakpoint(tablet-landscape) {
+        padding: 0.4rem 2.4rem;
+    }
+}
+
+%arrow-addon {
+    position: relative;
+    gap: 1rem;
+    padding-right: 1.6rem;
+    @include breakpoint(tablet-landscape) {
+        padding-right: 2rem;
+    }
+    &::before,
+    &::after {
+        position: relative;
+        content: "";
+        display: block;
+        transition: all 0.3s ease-in-out;
+        left: 0;
+    }
+    &::before {
+        width: 5rem;
+        height: 1px;
+        order: 2;
+        background-color: currentColor; 
+    }
+    &::after {
+        width: 1.5rem;
+        height: 1.5rem;
+        border-bottom: 1px solid currentColor;
+        border-right: 1px solid currentColor;
+        transform: rotate(-45deg);
+        order: 3;
+        margin-left: -2.8rem;
+    }
+    &:hover,
+    &:focus {
+        &::before,
+        &::after {
+            left: 1rem;
+        }
+    }
+}
+
+@mixin cta-inline($color: var(--color-primary), $color-hover: var(--color-secondary)) {
+    @extend %cta-reset;
+    position: relative;
+    display: flex;
+    align-items: center;
+    @extend %font-primary-std;
+    &:hover:not(:focus) {
+        color: $color-hover;
+    }
+    // ARROW
+    @extend %arrow-addon;
+    
+}
+
+@mixin cta-outline($color: var(--color-primary), $color-hover: var(--color-secondary)) {
+    @extend %cta-main;
+    color: $color;
+    border: 1px solid currentColor;
+    background-color: transparent;
+    &:hover:not(:focus) {
+        color: $color-hover;
+    }
+    // ARROW
+    @extend %arrow-addon;
+}
+
+
+
+/* @mixin cta-full($bg-color: var(--color-tertiary), $bg-color-hover: var(--color-secondary), $color: var(--color-primary)) {
+    @extend %cta-main;
+    color: $color;
+    background-color: $bg-color;
+    border: 1px solid $bg-color;
+    &:hover:not(:focus) {
+        text-decoration: none;
+        background-color: $bg-color-hover;
+        border-color: $bg-color-hover;
+    }
+} */

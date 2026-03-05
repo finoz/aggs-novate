@@ -1,53 +1,87 @@
-@use 'variables' as *;
-
-// ─── Reset & base ─────────────────────────────────────────────────────────────
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+@use 'helpers' as *;
 
 html {
-    font-size: 16px;
-    scroll-behavior: smooth;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    font-size: var(--font-size-root);
+    scroll-behavior: smooth; /* Supported by firefox and Chrome only. Use a fallback for unsupported browsers, if you need. */
+    overflow-x: hidden;
+    *,
+    *::before,
+    *::after {
+        box-sizing: inherit;
+    }
 }
 
 body {
-    font-family: $font-family-base;
-    font-size: $font-size-base;
-    line-height: $line-height-base;
-    color: $color-text;
-    background-color: $color-bg;
+    text-rendering: optimizeLegibility;
+    font-family: var(--font-family-primary);
+    line-height: 1.5;
+    color: var(--color-text);
 }
 
-// ─── Tipografia ───────────────────────────────────────────────────────────────
-h1, h2, h3, h4, h5, h6 {
-    font-weight: 700;
-    line-height: 1.25;
-    margin-bottom: $spacing-unit * 0.75;
+ul,
+ol {
+    list-style-position: inside;
+    padding-inline-start: 0;
 }
 
-h1 { font-size: 2rem; }
-h2 { font-size: 1.5rem; }
-h3 { font-size: 1.25rem; }
+hr {
+    border-width: 1px 0 0 0;
+    border-top: 1px solid;
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+    width: 100%;
+}
 
-p { margin-bottom: $spacing-unit; }
+pre {
+  font-size: 1.2rem;
+}
 
 a {
-    color: $color-primary;
-    text-decoration: underline;
-
-    &:hover { opacity: 0.8; }
+    color: inherit;
 }
 
-ul, ol {
-    padding-left: $spacing-unit * 1.5;
-    margin-bottom: $spacing-unit;
+p {
+    margin: 0;
 }
 
-time {
-    font-size: 0.875rem;
-    color: $color-text-muted;
+ul {
+    margin: 0;
+    padding: 0;
+}
+figure {
+    margin: 0;
+}
+
+dl {
+    text-align: left;
+    @include breakpoint(tablet-landscape) {
+        display: grid;
+        grid-template-columns: max-content auto;
+    }
+    dt {
+        grid-column-start: 1;
+    }
+    dd {
+        grid-column-start: 2;
+    }
+}
+
+fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }

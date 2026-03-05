@@ -1,0 +1,96 @@
+@use 'breakpoints' as *;
+
+:root {
+    --font-size-root: 10px;
+    --font-family-primary:   'Schibsted Grotesk', system-ui, -apple-system, sans-serif;
+    --font-family-secondary: 'Caudex', Georgia, serif;
+    //
+    --font-size-extrasmall: 1.2rem;
+    --font-size-small: 1.4rem;
+    --font-size-normal: clamp(1.6rem, 1.5vw + 0.5rem, 1.8rem);
+    --font-size-medium: clamp(2rem, 2vw + 0.5rem, 2.4rem);
+    --font-size-large: clamp(2.8rem, 3vw + 0.5rem, 3.6rem);
+    --font-size-extralarge: clamp(3.6rem, 4vw + 0.5rem, 4.8rem);
+    --font-size-huge: clamp(4.8rem, 5vw + 0.5rem, 6rem);
+    //
+    --font-lineheight-tight: 1;
+    --font-lineheight-normal: 1.5;
+    --font-lineheight-loose: 1.8; 
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    @extend %headings !optional;
+    font-size: inherit;
+    font-weight: inherit;
+    margin: 0;
+    line-height: inherit;
+    &:has(.icon) {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+}
+
+%font-base {
+    font-family: var(--font-family-primary);
+    line-height: var(--font-lineheight-normal);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased !important;
+    font-kerning: normal;
+    margin: 0;
+}
+
+%font-primary-xs {
+    @extend %font-base;
+    font-size: var(--font-size-extrasmall);
+    
+}
+
+
+%font-primary-s {
+    @extend %font-base;
+    font-size: var(--font-size-small);
+}
+%font-primary-s-upper-bold {
+    @extend %font-primary-s;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    
+}
+
+
+%font-primary-std {
+    @extend %font-base;
+    font-weight: 300;
+    font-size: var(--font-size-normal);
+}
+
+
+
+
+%font-primary-m {
+    @extend %font-base;
+    line-height: var(--font-lineheight-tight);
+    font-size: var(--font-size-medium);
+}
+
+
+
+
+%font-primary-l {
+    @extend %font-base;
+    line-height: var(--font-lineheight-tight);
+    font-size: var(--font-size-large);
+}
+
+%font-primary-xl {
+    @extend %font-base;
+    line-height: var(--font-lineheight-tight);
+    font-size: var(--font-size--extra-large);
+}
