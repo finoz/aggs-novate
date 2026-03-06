@@ -1,0 +1,65 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, pdo_mysql, xml, zip
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - run: npm ci
+      - run: npm run build
+
+      # Deploy app files → /home/xvqfogfz/
+      # Esclude: .env, storage/, public/ (va in public_html/), file solo locali
+      - name: Deploy Laravel app
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: >-
+            -avz --delete
+            --exclude='.env'
+            --exclude='storage/'
+            --exclude='public/'
+            --exclude='node_modules/'
+            --exclude='.git/'
+            --exclude='.github/'
+            --exclude='docker/'
+            --exclude='docker-compose.yml'
+            --exclude='Makefile'
+            --exclude='tests/'
+            --exclude='dump.sql'
+          path: ./
+          remote_path: /home/xvqfogfz/
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_user: ${{ secrets.SSH_USERNAME }}
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # Deploy public/ → public_html/ (web root)
+      # Esclude il symlink storage (va gestito a mano una volta)
+      - name: Deploy public files
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: -avz --delete --exclude='storage'
+          path: public/
+          remote_path: /home/xvqfogfz/public_html/
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_user: ${{ secrets.SSH_USERNAME }}
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
