@@ -1,8 +1,7 @@
-@use 'variables' as *;
-@use 'sass:color';
+@use 'helpers' as *;
 
 // ─── Container ────────────────────────────────────────────────────────────────
-.container {
+/* .container {
     max-width: $container-max-width;
     margin: 0 auto;
     padding: 0 $spacing-unit;
@@ -137,3 +136,4 @@
     color: $color-text-muted;
     font-style: italic;
 }
+ */
