@@ -28,27 +28,24 @@ jobs:
       - run: npm ci
       - run: npm run build
 
-      # Deploy app files → /home/otlfvjov/
-      # Elenco esplicito: non tocca .env, storage/, né public_html/
-      - name: Deploy Laravel app
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          source: "app,bootstrap,config,database,resources,routes,vendor,artisan,composer.json,composer.lock"
-          target: "/home/otlfvjov/"
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
-      # Deploy public/ → public_html/ (web root)
-      # strip_components:1 rimuove il prefisso "public/" dal path
+      # Deploy app files → /home/otlfvjov/ (non tocca .env, storage/, né public_html/)
+      - name: Deploy Laravel app
+        run: |
+          rsync -az --delete \
+            app/ bootstrap/ config/ database/ resources/ routes/ vendor/ \
+            artisan composer.json composer.lock \
+            ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/otlfvjov/
+
+      # Deploy public/ → public_html/ (web root, incluso public/build/)
       - name: Deploy public files
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          source: "public/"
-          target: "/home/otlfvjov/public_html/"
-          strip_components: 1
+        run: |
+          rsync -az --delete \
+            public/ \
+            ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/otlfvjov/public_html/
