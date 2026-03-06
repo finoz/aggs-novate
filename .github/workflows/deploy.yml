@@ -29,37 +29,26 @@ jobs:
       - run: npm run build
 
       # Deploy app files → /home/otlfvjov/
-      # Esclude: .env, storage/, public/ (va in public_html/), file solo locali
+      # Elenco esplicito: non tocca .env, storage/, né public_html/
       - name: Deploy Laravel app
-        uses: burnett01/rsync-deployments@7.0.1
+        uses: appleboy/scp-action@v0.1.7
         with:
-          switches: >-
-            -avz --delete
-            --exclude='.env'
-            --exclude='storage/'
-            --exclude='public/'
-            --exclude='node_modules/'
-            --exclude='.git/'
-            --exclude='.github/'
-            --exclude='docker/'
-            --exclude='docker-compose.yml'
-            --exclude='Makefile'
-            --exclude='tests/'
-            --exclude='dump.sql'
-          path: ./
-          remote_path: /home/otlfvjov/
-          remote_host: ${{ secrets.SSH_HOST }}
-          remote_user: ${{ secrets.SSH_USERNAME }}
-          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          source: "app,bootstrap,config,database,resources,routes,vendor,artisan,composer.json,composer.lock"
+          target: "/home/otlfvjov/"
 
       # Deploy public/ → public_html/ (web root)
-      # Esclude il symlink storage (va gestito a mano una volta)
+      # strip_components:1 rimuove il prefisso "public/" dal path
       - name: Deploy public files
-        uses: burnett01/rsync-deployments@7.0.1
+        uses: appleboy/scp-action@v0.1.7
         with:
-          switches: -avz --delete --exclude='storage'
-          path: public/
-          remote_path: /home/otlfvjov/public_html/
-          remote_host: ${{ secrets.SSH_HOST }}
-          remote_user: ${{ secrets.SSH_USERNAME }}
-          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          source: "public/"
+          target: "/home/otlfvjov/public_html/"
+          strip_components: 1
