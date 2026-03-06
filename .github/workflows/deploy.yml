@@ -28,9 +28,6 @@ jobs:
       - run: npm ci
       - run: npm run build
 
-      - name: Install rsync
-        run: sudo apt-get install -y rsync
-
       - name: Setup SSH key
         run: |
           mkdir -p ~/.ssh
@@ -41,14 +38,17 @@ jobs:
       # Deploy app files → /home/otlfvjov/ (non tocca .env, storage/, né public_html/)
       - name: Deploy Laravel app
         run: |
-          rsync -az --delete \
+          tar czf /tmp/app.tar.gz \
             app/ bootstrap/ config/ database/ resources/ routes/ vendor/ \
-            artisan composer.json composer.lock \
-            ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/otlfvjov/
+            artisan composer.json composer.lock
+          scp /tmp/app.tar.gz ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/otlfvjov/
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} \
+            "cd /home/otlfvjov && tar xzf app.tar.gz && rm app.tar.gz"
 
       # Deploy public/ → public_html/ (web root, incluso public/build/)
       - name: Deploy public files
         run: |
-          rsync -az --delete \
-            public/ \
-            ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/otlfvjov/public_html/
+          tar czf /tmp/public.tar.gz -C public .
+          scp /tmp/public.tar.gz ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/otlfvjov/public_html/
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} \
+            "cd /home/otlfvjov/public_html && tar xzf public.tar.gz && rm public.tar.gz"
