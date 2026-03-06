@@ -1,14 +1,9 @@
 @use 'breakpoints' as *;
 
-.sitemain,
-.is-root-container,
-.siteheader,
-.sitefooter {
-	> * {
-		padding-inline: 1rem;
-		max-width: var(--max-width);
-		@include breakpoint(tablet-landscape) {
-			padding-inline: 3rem;
-		}
-	}
+:root {
+	--space-main: clamp(2rem, 2vw, 4rem);
+	--space-s: clamp(1rem, 1vw, 2rem);
+	--space-m: clamp(1.5rem, 1.5vw, 3rem);
+	--space-l: clamp(2rem, 2vw, 4rem);
+	--space-xl: clamp(3rem, 3vw, 6rem);
 }

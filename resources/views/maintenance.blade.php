@@ -6,14 +6,16 @@
     <title>{{ config('app.name') }} — In costruzione</title>
     @vite(['resources/scss/app.scss', 'resources/ts/app.ts'])
 </head>
-<body>
-    <section class="maintenance">
-        <p>
-            {{ config('app.name') }}
-        </p>
-        <p>
-            Il sito è in costruzione.<br>Torna a visitarci presto.
-        </p>
-    </section>
+<body class="page-maintenance">
+    <main class="sitemain">
+        <figure class="splash-logo">
+            <img src="{{ asset('images/splash-logo.svg') }}" alt="{{ config('app.name') }}">
+        </figure>
+        <section class="splash-content">
+            <p>Qui il tuo gruppo scout preferito.<br>Il sito -come vedi- è in manutenzione: stiamo lavorando per voi.</p>
+            <p>Nel frattempo, se hai bisogno di qualcosa, scrivici!<br><a target="_blank" class="link-accent" href="mailto:{{ config('mail.from.address') }}">{{ config('mail.from.address') }}</a> </p>
+            <p class="note">Vostrissimi,<br>capi e matusa</p>
+        </section>
+    </main>
 </body>
 </html>

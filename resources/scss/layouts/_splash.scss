@@ -1,0 +1,78 @@
+@use '../helpers' as *;
+
+body.page-maintenance {
+	background-color: var(--color-bg-inverted);
+	color: var(--color-text-inverted);
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    height: 100dvh;
+	.sitemain {
+		position: relative;
+		z-index: 2;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		max-width: none;
+		width: 90vw;
+		height: 90dvh;
+		padding: var(--space-main);
+		gap: var(--space-xl);
+		&::after {
+			content: "";
+			position: relative;
+			order: 2;
+			width: 100%;
+			height: 1.5rem;
+			border-color: var(--color-accent);
+			border-width: 0.3rem 0;
+			border-style: solid;
+			@include breakpoint(tablet-landscape) {
+				width: 1.5rem;
+				height: 100%;
+				border-width: 0 0.3rem;
+			}
+		}
+		@include breakpoint(tablet-landscape) {
+			flex-direction: row;
+			padding: 8rem;
+			align-items: center;
+			justify-content: space-between;
+		}
+	}
+	.splash-logo {
+		order: 1;
+		img {
+			width: 100%;
+		}
+	}
+	.splash-content {
+		order: 3;
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		gap: var(--space-main);
+		align-items: flex-start;
+		@extend %font-primary-m;
+		.link-accent {
+			color: var(--color-accent);
+			font-family: var(--font-family-secondary);
+			font-style: italic;
+			text-decoration: none;
+			&:hover {
+				text-decoration: underline;	
+			}
+
+		}
+		.note {
+			@extend %font-primary-s;
+			font-style: italic;
+		}
+		@include breakpoint(tablet-landscape) {
+			width: auto;
+		}	
+	}	
+}
