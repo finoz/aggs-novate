@@ -11,7 +11,7 @@
     .container {
         display: flex;
         align-items: center;
-        gap: $spacing-unit * 1.5;
+        gap: 2rem;
     }
 }
 
@@ -31,7 +31,9 @@
         text-decoration: none;
         font-size: 0.9rem;
 
-        &:hover, &.active { color: white; }
+        &:hover, &.active { 
+            color: white; 
+        }
     }
 }
 
@@ -78,7 +80,6 @@
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.04em;
-        color: $color-text-muted;
     }
 
     tbody tr:last-child td { border-bottom: none; }
@@ -99,13 +100,10 @@
     font-weight: 600;
 
     &--yes {
-        background: color.adjust($color-success, $lightness: 58%);
-        color: color.adjust($color-success, $lightness: -5%);
+        color: green;
     }
 
     &--no {
-        background: $color-bg-light;
-        color: $color-text-muted;
     }
 }
 
@@ -128,34 +126,30 @@
         margin-bottom: 0.35rem;
     }
 
-    .required { color: $color-error; }
+    .required { color: red; }
 }
 
 .form-control {
     display: block;
     width: 100%;
     padding: 0.5rem 0.75rem;
-    border: 1px solid $color-border;
+    border: 1px solid #000;
     border-radius: 4px;
-    font-size: $font-size-base;
     font-family: inherit;
-    line-height: $line-height-base;
     transition: border-color 0.15s;
 
     &:focus {
         outline: none;
-        border-color: $color-primary;
-        box-shadow: 0 0 0 2px rgba($color-primary, 0.15);
     }
 
-    &.is-invalid { border-color: $color-error; }
+    &.is-invalid { border-color: red; }
 }
 
 textarea.form-control { resize: vertical; }
 
 .form-error {
     display: block;
-    color: $color-error;
+    color: red;
     font-size: 0.8125rem;
     margin-top: 0.25rem;
 }
@@ -171,10 +165,10 @@ textarea.form-control { resize: vertical; }
 .form-actions {
     display: flex;
     align-items: center;
-    gap: $spacing-unit;
-    margin-top: $spacing-unit * 1.5;
-    padding-top: $spacing-unit;
-    border-top: 1px solid $color-border;
+    gap: 2rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid currentColor;
 }
 
 // ─── Login ────────────────────────────────────────────────────────────────────
@@ -189,21 +183,19 @@ textarea.form-control { resize: vertical; }
     width: 100%;
     max-width: 400px;
     background: white;
-    padding: $spacing-unit * 2;
+    padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 
     h1 {
         font-size: 1.5rem;
-        color: $color-primary;
         margin-bottom: 0.25rem;
     }
 
     h2 {
         font-size: 1.125rem;
         font-weight: 400;
-        color: $color-text-muted;
-        margin-bottom: $spacing-unit * 1.5;
+        margin-bottom: 2rem;
     }
 }
 
@@ -213,11 +205,10 @@ textarea.form-control { resize: vertical; }
     border: none;
     cursor: pointer;
     font-size: inherit;
-    color: $color-primary;
     text-decoration: underline;
     padding: 0;
 
-    &--danger { color: $color-error; }
+    &--danger { color: red }
 }
 
 // ─── Form wide (per pagine con editor) ────────────────────────────────────────
@@ -227,7 +218,7 @@ textarea.form-control { resize: vertical; }
 
 .form-row {
     display: flex;
-    gap: $spacing-unit * 1.5;
+    gap: 2rem;
     align-items: flex-start;
 }
 
@@ -238,23 +229,20 @@ textarea.form-control { resize: vertical; }
 .form-hint {
     display: block;
     font-size: 0.8125rem;
-    color: $color-text-muted;
     margin-top: 0.25rem;
 }
 
 .slug-preview {
     display: flex;
     align-items: center;
-    border: 1px solid $color-border;
+    border: 1px solid;
     border-radius: 4px;
     overflow: hidden;
 
     &__base {
         padding: 0.5rem 0.75rem;
-        background: $color-bg-light;
-        border-right: 1px solid $color-border;
+        border-right: 1px solid;
         font-size: 0.875rem;
-        color: $color-text-muted;
         white-space: nowrap;
     }
 
@@ -274,8 +262,7 @@ textarea.form-control { resize: vertical; }
     flex-wrap: wrap;
     gap: 2px;
     padding: 0.4rem 0.5rem;
-    background: $color-bg-light;
-    border-bottom: 1px solid $color-border;
+    border-bottom: 1px solid;
     border-radius: 4px 4px 0 0;
 
     button {
@@ -285,42 +272,38 @@ textarea.form-control { resize: vertical; }
         cursor: pointer;
         padding: 0.2rem 0.5rem;
         font-size: 0.875rem;
-        color: $color-text;
         line-height: 1.4;
         min-width: 28px;
 
-        &:hover { background: $color-border; }
+        &:hover {
+            opacity: 0.8;
+        }
         &.is-active {
-            background: $color-primary;
             color: white;
-            border-color: $color-primary;
         }
     }
 
     &__sep {
         width: 1px;
         height: 1.25rem;
-        background: $color-border;
+        background: #000;
         margin: 0 3px;
     }
 }
 
 // ─── TipTap Editor ────────────────────────────────────────────────────────────
 .tiptap-editor {
-    border: 1px solid $color-border;
+    border: 1px solid;
     border-radius: 4px;
     background: white;
     min-height: 320px;
     cursor: text;
 
     &:focus-within {
-        border-color: $color-primary;
-        box-shadow: 0 0 0 2px rgba($color-primary, 0.15);
     }
 
     // L'elemento .tiptap è l'area editabile generata da TipTap
     .tiptap {
-        padding: $spacing-unit;
         outline: none;
         min-height: 280px;
 
@@ -331,30 +314,27 @@ textarea.form-control { resize: vertical; }
         p  { margin-bottom: 0.75rem; }
         ul, ol { padding-left: 1.5rem; margin-bottom: 0.75rem; }
         li { margin-bottom: 0.25rem; }
-        a  { color: $color-primary; text-decoration: underline; }
+        a  {text-decoration: underline; }
         blockquote {
-            border-left: 3px solid $color-border;
+            border-left: 3px solid;
             padding-left: 1rem;
-            color: $color-text-muted;
             font-style: italic;
             margin: 0.75rem 0;
         }
         code {
-            background: $color-bg-light;
             padding: 0.1em 0.35em;
             border-radius: 3px;
             font-size: 0.875em;
         }
         hr {
             border: none;
-            border-top: 1px solid $color-border;
+            border-top: 1px solid;
             margin: 1rem 0;
         }
 
         // Placeholder
         &.is-editor-empty:first-child::before {
             content: attr(data-placeholder);
-            color: $color-text-muted;
             pointer-events: none;
             float: left;
             height: 0;
@@ -365,16 +345,15 @@ textarea.form-control { resize: vertical; }
 // ─── Block Editor ─────────────────────────────────────────────────────────────
 
 .block-editor {
-    border: 1px solid $color-border;
+    border: 1px solid;
     border-radius: 6px;
-    background: $color-bg-light;
-    padding: $spacing-unit * 0.75;
+    padding: 1rem;
 }
 
 .block-list {
     display: flex;
     flex-direction: column;
-    gap: $spacing-unit * 0.5;
+    gap: 2rem;
     min-height: 48px;
 
     &--nested {
@@ -387,7 +366,7 @@ textarea.form-control { resize: vertical; }
 
 .block-card {
     background: white;
-    border: 1px solid $color-border;
+    border: 1px solid;
     border-radius: 6px;
     overflow: hidden;
     box-shadow: 0 1px 3px rgba(0,0,0,.06);
@@ -400,15 +379,13 @@ textarea.form-control { resize: vertical; }
         align-items: center;
         gap: 0.5rem;
         padding: 0.4rem 0.75rem;
-        background: $color-bg-light;
-        border-bottom: 1px solid $color-border;
+        border-bottom: 1px solid;
         user-select: none;
     }
 
     &__drag {
         cursor: grab;
         font-size: 1.1rem;
-        color: $color-text-muted;
         line-height: 1;
         padding: 0 0.2rem;
         &:active { cursor: grabbing; }
@@ -420,7 +397,6 @@ textarea.form-control { resize: vertical; }
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.04em;
-        color: $color-text-muted;
     }
 
     &__delete {
@@ -429,13 +405,12 @@ textarea.form-control { resize: vertical; }
         cursor: pointer;
         font-size: 1.25rem;
         line-height: 1;
-        color: $color-text-muted;
         padding: 0 0.2rem;
-        &:hover { color: $color-error; }
+        &:hover { color: red; }
     }
 
     &__body {
-        padding: $spacing-unit * 0.75;
+        padding: 1rem;
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
@@ -452,33 +427,28 @@ textarea.form-control { resize: vertical; }
 
 .block-input {
     padding: 0.35rem 0.6rem;
-    border: 1px solid $color-border;
+    border: 1px solid;
     border-radius: 4px;
     font-size: 0.9rem;
     font-family: inherit;
     background: white;
-    color: $color-text;
     width: 100%;
 
     &:focus {
         outline: none;
-        border-color: $color-primary;
-        box-shadow: 0 0 0 2px rgba($color-primary, 0.12);
     }
 }
 
 select.block-input { width: auto; flex-shrink: 0; }
 
 .block-tiptap {
-    border: 1px solid $color-border;
+    border: 1px solid;
     border-radius: 4px;
     background: white;
     min-height: 120px;
     cursor: text;
 
     &:focus-within {
-        border-color: $color-primary;
-        box-shadow: 0 0 0 2px rgba($color-primary, 0.12);
     }
 
     .tiptap {
@@ -491,7 +461,7 @@ select.block-input { width: auto; flex-shrink: 0; }
         h2 { font-size: 1.25rem; }
         h3 { font-size: 1.1rem; }
         ul, ol { padding-left: 1.5rem; }
-        a { color: $color-primary; text-decoration: underline; }
+        a { text-decoration: underline; }
     }
 }
 
@@ -501,9 +471,7 @@ select.block-input { width: auto; flex-shrink: 0; }
     summary {
         cursor: pointer;
         font-size: 0.78rem;
-        color: $color-text-muted;
         user-select: none;
-        &:hover { color: $color-text; }
     }
 
     &__fields {
@@ -514,7 +482,6 @@ select.block-input { width: auto; flex-shrink: 0; }
 
         label {
             font-size: 0.75rem;
-            color: $color-text-muted;
             display: block;
             margin-bottom: 0.2rem;
         }
@@ -524,14 +491,13 @@ select.block-input { width: auto; flex-shrink: 0; }
 // ─── Image block ──────────────────────────────────────────────────────────────
 
 .block-image-wrap {
-    border: 1px dashed $color-border;
+    border: 1px dashed;
     border-radius: 4px;
     min-height: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background: $color-bg-light;
 
     img.block-image-preview {
         max-width: 100%;
@@ -541,7 +507,6 @@ select.block-input { width: auto; flex-shrink: 0; }
 }
 
 .block-image-placeholder {
-    color: $color-text-muted;
     font-size: 0.85rem;
 }
 
@@ -549,30 +514,31 @@ select.block-input { width: auto; flex-shrink: 0; }
     display: inline-block;
     cursor: pointer;
     padding: 0.3rem 0.75rem;
-    border: 1px solid $color-border;
+    border: 1px solid;
     border-radius: 4px;
     background: white;
     font-size: 0.85rem;
     white-space: nowrap;
-    &:hover { background: $color-bg-light; }
+    &:hover {
+        
+    }
 }
 
 .block-upload-status {
     font-size: 0.8rem;
-    color: $color-text-muted;
 }
 
 // ─── Columns block editor ─────────────────────────────────────────────────────
 
 .block-columns-editor {
     display: flex;
-    gap: $spacing-unit * 0.75;
+    gap: 1rem;
     align-items: flex-start;
 }
 
 .block-column-editor {
     flex: 1;
-    border: 1px solid $color-border;
+    border: 1px solid;
     border-radius: 4px;
     overflow: hidden;
 
@@ -581,11 +547,9 @@ select.block-input { width: auto; flex-shrink: 0; }
         align-items: center;
         justify-content: space-between;
         padding: 0.3rem 0.5rem;
-        background: $color-bg-light;
-        border-bottom: 1px solid $color-border;
+        border-bottom: 1px solid;
         font-size: 0.75rem;
         font-weight: 600;
-        color: $color-text-muted;
         text-transform: uppercase;
         letter-spacing: 0.04em;
     }
@@ -610,13 +574,12 @@ select.block-input { width: auto; flex-shrink: 0; }
     align-items: center;
     flex-wrap: wrap;
     gap: 0.4rem;
-    margin-top: $spacing-unit * 0.75;
-    padding-top: $spacing-unit * 0.5;
-    border-top: 1px solid $color-border;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid;
 
     &__label {
         font-size: 0.8rem;
-        color: $color-text-muted;
         margin-right: 0.25rem;
     }
 }
@@ -624,17 +587,13 @@ select.block-input { width: auto; flex-shrink: 0; }
 .block-add-btn {
     display: inline-block;
     padding: 0.3rem 0.8rem;
-    border: 1px solid $color-border;
+    border: 1px solid;
     border-radius: 20px;
     background: white;
     font-size: 0.8rem;
     cursor: pointer;
-    color: $color-text;
-    transition: background 0.15s, border-color 0.15s;
 
     &:hover {
-        background: $color-primary;
-        border-color: $color-primary;
         color: white;
     }
 
@@ -646,8 +605,8 @@ select.block-input { width: auto; flex-shrink: 0; }
 
     &--danger {
         &:hover {
-            background: $color-error;
-            border-color: $color-error;
+            background: red;
+            border-color: red;
         }
     }
 }
