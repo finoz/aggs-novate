@@ -9,27 +9,7 @@
 </head>
 <body>
 
-<header class="site-header">
-    <div class="container">
-        <a href="{{ route('home') }}" class="site-logo">
-            {{ config('app.name') }}
-        </a>
-        <nav class="site-nav">
-            @foreach($navPages as $navPage)
-                @if($navPage->slug === 'home')
-                    <a href="{{ route('home') }}" @class(['active' => request()->routeIs('home')])>
-                        {{ $navPage->titolo }}
-                    </a>
-                @else
-                    <a href="{{ route('page.show', $navPage->slug) }}"
-                       @class(['active' => request()->is($navPage->slug)])>
-                        {{ $navPage->titolo }}
-                    </a>
-                @endif
-            @endforeach
-        </nav>
-    </div>
-</header>
+@include('partials.header')
 
 <main class="site-main">
     <div class="container">
@@ -37,11 +17,7 @@
     </div>
 </main>
 
-<footer class="site-footer">
-    <div class="container">
-        <p>&copy; {{ date('Y') }} {{ config('app.name') }}</p>
-    </div>
-</footer>
+@include('partials.footer')
 
 </body>
 </html>
