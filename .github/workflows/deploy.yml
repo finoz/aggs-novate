@@ -28,7 +28,7 @@ jobs:
       - run: npm ci
       - run: npm run build
 
-      # Deploy app files → /home/xvqfogfz/
+      # Deploy app files → /home/otlfvjov/
       # Esclude: .env, storage/, public/ (va in public_html/), file solo locali
       - name: Deploy Laravel app
         uses: burnett01/rsync-deployments@7.0.1
@@ -47,7 +47,7 @@ jobs:
             --exclude='tests/'
             --exclude='dump.sql'
           path: ./
-          remote_path: /home/xvqfogfz/
+          remote_path: /home/otlfvjov/
           remote_host: ${{ secrets.SSH_HOST }}
           remote_user: ${{ secrets.SSH_USERNAME }}
           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -59,7 +59,7 @@ jobs:
         with:
           switches: -avz --delete --exclude='storage'
           path: public/
-          remote_path: /home/xvqfogfz/public_html/
+          remote_path: /home/otlfvjov/public_html/
           remote_host: ${{ secrets.SSH_HOST }}
           remote_user: ${{ secrets.SSH_USERNAME }}
           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
