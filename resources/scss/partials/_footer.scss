@@ -8,14 +8,13 @@
 	@extend %font-primary-xs;
 	margin-top: 6rem;
 	&-inner {
+		@extend %main-container;
 		display: flex;
 		flex-direction: column;
-		width: 100%;
 		gap: 4rem;
 		@include breakpoint(tablet-landscape) {
 			flex-direction: row;
 			flex-wrap: wrap;
-			max-width: var(--max-width);
 			gap: 6rem;
 			padding-block: 4rem;
 

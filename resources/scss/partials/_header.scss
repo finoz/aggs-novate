@@ -20,12 +20,12 @@
 		transition: all 0.3s ease;
 	}
 	&-inner {
+        @extend %main-container;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
 		width: 100%;
-		max-width: var(--max-width);
 		gap: 2.4rem;
 	}
 	&-logo {
@@ -156,7 +156,7 @@
                     text-decoration: none;
                     color: inherit;
                     cursor: pointer;
-                    @extend %font-primary-std;
+                    @extend %font-primary-m;
                 }
                 &[class*="current"]:not(.highlight) {
 					> a {

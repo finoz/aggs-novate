@@ -1,0 +1,13 @@
+@use '../helpers' as *;
+
+.page-body {
+	h1 {
+			@extend %font-primary-xl;
+	}
+	h2 {
+			@extend %font-primary-l;
+	}
+	h3 {
+			@extend %font-primary-m;
+	}
+}

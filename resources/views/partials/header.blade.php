@@ -5,9 +5,13 @@
         </button>
         <h1 class="siteheader-logo" aria-label="{{ config('app.name') }}">
             @if(request()->routeIs('home'))
+                <img src="{{ asset('images/main-logo.svg') }}" alt="">
                 <span>{{ config('app.name') }}</span>
             @else    
-                <a href="{{ route('home') }}">{{ config('app.name') }}</a>
+                <a href="{{ route('home') }}">
+                    <img src="{{ asset('images/main-logo.svg') }}" alt="">
+                    <span>{{ config('app.name') }}</span>
+                </a>
             @endif
         </h1>
         <nav id="siteheader-nav" class="siteheader-nav" role="navigation" aria-label="Main navigation">

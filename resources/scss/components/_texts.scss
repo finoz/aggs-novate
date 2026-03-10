@@ -1,0 +1,6 @@
+@use '../helpers' as *;
+.page-body {
+	p {
+			@extend %font-primary-m;
+	}
+}

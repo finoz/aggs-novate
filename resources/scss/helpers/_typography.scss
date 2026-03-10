@@ -5,13 +5,13 @@
     --font-family-primary:   'Schibsted Grotesk', system-ui, -apple-system, sans-serif;
     --font-family-secondary: 'Caudex', Georgia, serif;
     //
-    --font-size-extrasmall: 1.2rem;
-    --font-size-small: 1.4rem;
-    --font-size-normal: clamp(1.6rem, 1.5vw + 0.5rem, 1.8rem);
-    --font-size-medium: clamp(2rem, 2vw + 0.5rem, 2.4rem);
-    --font-size-large: clamp(2.8rem, 3vw + 0.5rem, 3.6rem);
-    --font-size-extralarge: clamp(3.6rem, 4vw + 0.5rem, 4.8rem);
-    --font-size-huge: clamp(4.8rem, 5vw + 0.5rem, 6rem);
+    // preferred = min + (max - min) * (100vw - 360px) / (1440 - 360)
+    --font-size-xs:  1.2rem;
+    --font-size-s:   1.4rem;
+    --font-size-m:   clamp(1.6rem, 1.53rem + 0.19vw, 1.8rem);
+    --font-size-l:   clamp(2.0rem, 1.67rem + 0.93vw, 3.0rem);
+    --font-size-xl:  clamp(2.5rem, 1.73rem + 2.13vw, 4.8rem);
+    --font-size-xxl: clamp(3.2rem, 1.77rem + 3.98vw, 7.5rem);
     //
     --font-lineheight-tight: 1;
     --font-lineheight-normal: 1.5;
@@ -47,36 +47,36 @@ h6 {
 
 %font-primary-xs {
     @extend %font-base;
-    font-size: var(--font-size-extrasmall);
+    font-size: var(--font-size-xs);
     
 }
 
 
 %font-primary-s {
     @extend %font-base;
-    font-size: var(--font-size-small);
-}
-
-%font-primary-std {
-    @extend %font-base;
-    font-weight: 300;
-    font-size: var(--font-size-normal);
+    font-size: var(--font-size-s);
 }
 
 %font-primary-m {
     @extend %font-base;
-    line-height: var(--font-lineheight-tight);
-    font-size: var(--font-size-medium);
+    font-weight: 300;
+    font-size: var(--font-size-m);
 }
 
 %font-primary-l {
     @extend %font-base;
     line-height: var(--font-lineheight-tight);
-    font-size: var(--font-size-large);
+    font-size: var(--font-size-l);
 }
 
 %font-primary-xl {
     @extend %font-base;
     line-height: var(--font-lineheight-tight);
-    font-size: var(--font-size--extra-large);
+    font-size: var(--font-size-xl);
+}
+
+%font-primary-xxl {
+    @extend %font-base;
+    line-height: var(--font-lineheight-tight);
+    font-size: var(--font-size--xl);
 }

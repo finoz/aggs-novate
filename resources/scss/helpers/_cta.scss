@@ -24,7 +24,7 @@
     justify-content: center;
     width: auto;
     text-align: center;
-    @extend %font-primary-std;
+    @extend %font-primary-m;
     padding: 0.4rem 2rem;
     min-height: 5.2rem;
     transition: all 0.3s ease;
@@ -78,7 +78,7 @@
     position: relative;
     display: flex;
     align-items: center;
-    @extend %font-primary-std;
+    @extend %font-primary-m;
     &:hover:not(:focus) {
         color: $color-hover;
     }

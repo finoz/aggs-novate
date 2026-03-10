@@ -21,9 +21,15 @@
   --bp-desktop: 1366px;
   --max-width: 144rem; // 144rem
   --max-reading: 72rem; // 72rem
-  --radius-s: 1.2rem;
-  --radius-m: 2.4rem;
-  --radius-l: 3.6rem;
+  //
+	--space-main: clamp(2rem, 2vw, 4rem);
+	--space-s: clamp(1rem, 1vw, 2rem);
+	--space-m: clamp(1.5rem, 1.5vw, 3rem);
+	--space-l: clamp(2rem, 2vw, 4rem);
+	--space-xl: clamp(3rem, 3vw, 6rem);
+  //
+  --radius-s: clamp(0.4rem, 0.4vw, 0.8rem);
+  --radius-m: clamp(0.8rem, 0.8vw, 1.6rem);
 }
 
 /* useful for loops on media breakpoints */
@@ -35,4 +41,12 @@ $bp-list: (
   desktop: 1366px,
   max-width: 1440px
 );
+
+%main-container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-inline: var(--space-main);
+}
 
