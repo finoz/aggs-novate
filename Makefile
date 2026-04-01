@@ -1,4 +1,4 @@
-.PHONY: build install start stop restart shell artisan migrate seed npm fresh logs
+.PHONY: build install start stop restart shell artisan migrate seed npm fresh logs deploy
 
 # ──────────────────────────────────────────
 # Setup
@@ -68,6 +68,14 @@ fresh:
 
 seed:
 	docker compose exec app php artisan db:seed
+
+## Comandi da eseguire sull'hosting remoto dopo ogni deploy (migrate + storage link)
+deploy:
+	php artisan migrate --force
+	php artisan storage:link
+	php artisan config:cache
+	php artisan route:cache
+	php artisan view:cache
 
 ## Es: make npm cmd="run dev"
 npm:
