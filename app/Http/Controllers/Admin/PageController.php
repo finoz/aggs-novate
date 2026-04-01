@@ -19,7 +19,9 @@ class PageController extends Controller
 
     public function create(): View
     {
-        return view('admin.pages.create');
+        $page = new Page();
+
+        return view('admin.pages.create', compact('page'));
     }
 
     public function store(Request $request): RedirectResponse
