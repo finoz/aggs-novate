@@ -1,6 +1,12 @@
 @use '../helpers' as *;
-.page-body {
+
+.block--text {
+	@extend %font-primary-m;
 	p {
-			@extend %font-primary-m;
+		display: block;		
+	}
+	ul {
+		display: flex;
+		flex-direction: column;
 	}
 }

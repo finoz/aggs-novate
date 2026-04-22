@@ -2,12 +2,36 @@
 
 .page-body {
 	h1 {
-			@extend %font-primary-xl;
+			@extend %font-primary-xxl;
 	}
 	h2 {
-			@extend %font-primary-l;
+			@extend %font-primary-xl;
 	}
 	h3 {
-			@extend %font-primary-m;
+			@extend %font-primary-l;
+	}
+	.abstract, .abstract > * {
+		@extend %font-primary-l;
+		line-height: var(--font-lineheight-normal);
+		font-weight: normal;
+	}
+	.abstract {
+		@include breakpoint('tablet-landscape') {
+			position: relative;
+			&::before {
+				content: '';
+				display: block;
+				position: absolute;
+				top: 1rem;
+				left: -9.6rem;
+				width: 4.8rem;
+				height: 4.8rem;
+				background-color: currentColor;
+				mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M7.69431 48V38.8465H38.561L37.6664 44.5619L0 6.92093L6.8891 0L44.6002 37.6409L38.9189 38.4446V7.7693H48V48H7.69431Z'/%3E%3C/svg%3E");
+				-webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M7.69431 48V38.8465H38.561L37.6664 44.5619L0 6.92093L6.8891 0L44.6002 37.6409L38.9189 38.4446V7.7693H48V48H7.69431Z'/%3E%3C/svg%3E");
+				mask-repeat: no-repeat;
+				mask-size: contain;
+			}
+		}
 	}
 }

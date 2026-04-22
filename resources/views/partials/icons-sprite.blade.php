@@ -1,0 +1,13 @@
+<svg hidden aria-hidden="true" style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="icon-arrow-rd" viewBox="0 0 48 48">
+    <g clip-path="url(#clip0_77_65)">
+<rect width="48" height="48" fill="white"/>
+<path d="M7.69431 48V38.8465H38.561L37.6664 44.5619L0 6.92093L6.8891 0L44.6002 37.6409L38.9189 38.4446V7.7693H48V48H7.69431Z" fill="currentColor"/>
+</g>
+<defs>
+<clipPath id="clip0_77_65">
+<rect width="48" height="48" fill="white"/>
+</clipPath>
+</defs>
+  </symbol>
+</svg>

@@ -9,6 +9,8 @@
 </head>
 <body>
 
+@include('partials.icons-sprite')
+
 @include('partials.header')
 
 <main class="site-main">

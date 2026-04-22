@@ -5,7 +5,7 @@
  *
  * Supported block types:
  *   heading  — level (H1-H5) + text
- *   text     — TipTap rich text
+ *   text     — EasyMDE Markdown editor
  *   image    — file upload → src, alt, caption
  *   callout  — variant (info/warning/success/danger) + TipTap rich text
  *   columns  — 2+ columns, each containing nested blocks (no columns-in-columns)
@@ -15,6 +15,8 @@ import Sortable from 'sortablejs';
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
+import EasyMDE from 'easymde';
+import 'easymde/dist/easymde.min.css';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -35,7 +37,7 @@ interface HeadingBlock extends BaseBlock {
 
 interface TextBlock extends BaseBlock {
     type: 'text';
-    content: object | null;
+    content: string | null;
 }
 
 interface ImageBlock extends BaseBlock {
@@ -66,8 +68,11 @@ type Block = NestedBlock | ColumnsBlock;
 
 // ─── State ────────────────────────────────────────────────────────────────────
 
-/** TipTap instance registry: key = block id (or "col:colId:blockId" for nested) */
+/** TipTap instances: callout blocks only */
 const tiptapInstances = new Map<string, Editor>();
+
+/** EasyMDE instances: text blocks */
+const easymdeInstances = new Map<string, EasyMDE>();
 
 let uploadUrl  = '/admin/upload';
 let csrfToken  = '';
@@ -100,7 +105,6 @@ export function initBlockEditor(container: HTMLElement, hiddenInput: HTMLInputEl
             const block = makeDefaultBlock(type);
             const card  = renderBlock(block);
             blockList.appendChild(card);
-            // Scroll to and focus new block
             card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         });
     });
@@ -121,7 +125,7 @@ function makeDefaultBlock(type: BlockType): Block {
     const id = crypto.randomUUID();
     switch (type) {
         case 'heading':  return { id, type, level: 2, text: '', class: '', htmlId: '' };
-        case 'text':     return { id, type, content: null, class: '', htmlId: '' };
+        case 'text':     return { id, type, content: '', class: '', htmlId: '' };
         case 'image':    return { id, type, src: '', alt: '', caption: '', class: '', htmlId: '' };
         case 'callout':  return { id, type, variant: 'info', content: null, class: '', htmlId: '' };
         case 'columns':  return {
@@ -154,13 +158,11 @@ function renderBlock(block: Block, nested = false): HTMLElement {
         </div>
     `;
 
-    // Wire delete
     card.querySelector<HTMLButtonElement>('.block-card__delete')!.addEventListener('click', () => {
-        destroyTiptapInCard(card);
+        destroyEditorInCard(card);
         card.remove();
     });
 
-    // Post-insert: spawn TipTap instances and nested sortables
     afterInsert(card, block, nested);
 
     return card;
@@ -206,7 +208,7 @@ function renderBlockBody(block: Block, nested: boolean): string {
 
         case 'text':
             return `
-                <div class="block-tiptap" data-tiptap></div>
+                <textarea class="block-markdown" data-markdown></textarea>
                 ${advancedFields}`;
 
         case 'image':
@@ -267,29 +269,25 @@ function renderBlockBody(block: Block, nested: boolean): string {
     }
 }
 
-// ─── Post-insert hooks (TipTap, sortable, image upload, nested) ───────────────
+// ─── Post-insert hooks ────────────────────────────────────────────────────────
 
 function afterInsert(card: HTMLElement, block: Block, nested: boolean): void {
-    // TipTap for text blocks
     if (block.type === 'text') {
-        const el = card.querySelector<HTMLElement>('[data-tiptap]')!;
-        const editor = spawnTipTap(el, (block as TextBlock).content);
-        tiptapInstances.set(block.id, editor);
+        const ta = card.querySelector<HTMLTextAreaElement>('[data-markdown]')!;
+        const raw = (block as TextBlock).content;
+        const initialValue = typeof raw === 'string' ? raw : '';
+        easymdeInstances.set(block.id, spawnEasyMDE(ta, initialValue));
     }
 
-    // TipTap for callout blocks
     if (block.type === 'callout') {
         const el = card.querySelector<HTMLElement>('[data-tiptap]')!;
-        const editor = spawnTipTap(el, (block as CalloutBlock).content);
-        tiptapInstances.set(block.id, editor);
+        tiptapInstances.set(block.id, spawnTipTap(el, (block as CalloutBlock).content));
     }
 
-    // Image upload wiring
     if (block.type === 'image') {
         wireImageUpload(card);
     }
 
-    // Columns: init nested sortables and wire buttons
     if (block.type === 'columns' && !nested) {
         wireColumnsBlock(card, block as ColumnsBlock);
     }
@@ -309,7 +307,6 @@ function wireImageUpload(card: HTMLElement): void {
         try {
             const url = await uploadImage(file);
             srcField.value = url;
-            // Update preview
             let img = imageWrap.querySelector<HTMLImageElement>('img');
             if (!img) {
                 imageWrap.querySelector('.block-image-placeholder')?.remove();
@@ -326,19 +323,17 @@ function wireImageUpload(card: HTMLElement): void {
 }
 
 function wireColumnsBlock(card: HTMLElement, block: ColumnsBlock): void {
-    // Init sortable on each nested list
     card.querySelectorAll<HTMLElement>('[data-nested-list]').forEach(list => {
         initSortable(list, true);
     });
 
-    // Wire "add nested block" buttons inside each column
     card.querySelectorAll<HTMLElement>('.block-column-editor').forEach(colEl => {
         const nestedList = colEl.querySelector<HTMLElement>('[data-nested-list]')!;
 
         colEl.querySelectorAll<HTMLButtonElement>('[data-add-nested]').forEach(btn => {
             btn.addEventListener('click', () => {
                 const type = btn.dataset.addNested as BlockType;
-                if (type === 'columns') return; // no nesting columns
+                if (type === 'columns') return;
                 const nestedBlock = makeDefaultBlock(type) as NestedBlock;
                 const nestedCard  = renderBlock(nestedBlock, true);
                 nestedList.appendChild(nestedCard);
@@ -346,7 +341,6 @@ function wireColumnsBlock(card: HTMLElement, block: ColumnsBlock): void {
         });
     });
 
-    // Wire "Add column" button
     const addColBtn = card.querySelector<HTMLButtonElement>('[data-add-column]');
     addColBtn?.addEventListener('click', () => {
         const colsEditor = card.querySelector<HTMLElement>('.block-columns-editor')!;
@@ -380,14 +374,13 @@ function wireColumnsBlock(card: HTMLElement, block: ColumnsBlock): void {
         });
     });
 
-    // Wire "Remove column" button (removes last column)
     const removeColBtn = card.querySelector<HTMLButtonElement>('[data-remove-column]');
     removeColBtn?.addEventListener('click', () => {
         const colsEditor = card.querySelector<HTMLElement>('.block-columns-editor')!;
         const cols = colsEditor.querySelectorAll<HTMLElement>('.block-column-editor');
         if (cols.length > 1) {
             const last = cols[cols.length - 1];
-            last.querySelectorAll<HTMLElement>('[data-id]').forEach(c => destroyTiptapInCard(c));
+            last.querySelectorAll<HTMLElement>('[data-id]').forEach(c => destroyEditorInCard(c));
             last.remove();
         }
     });
@@ -415,7 +408,7 @@ function serializeCard(card: HTMLElement, nested: boolean): Block {
 
         case 'text': return {
             id, type, class: cls, htmlId: hid,
-            content: tiptapInstances.get(id)?.getJSON() ?? null,
+            content: easymdeInstances.get(id)?.value() ?? null,
         };
 
         case 'image': return {
@@ -447,18 +440,29 @@ function serializeCard(card: HTMLElement, nested: boolean): Block {
 
 // ─── Cleanup helpers ──────────────────────────────────────────────────────────
 
-function destroyTiptapInCard(card: HTMLElement): void {
+function destroyEditorInCard(card: HTMLElement): void {
     const id = card.dataset.id;
-    if (id && tiptapInstances.has(id)) {
-        tiptapInstances.get(id)!.destroy();
-        tiptapInstances.delete(id);
+    if (id) {
+        if (tiptapInstances.has(id)) {
+            tiptapInstances.get(id)!.destroy();
+            tiptapInstances.delete(id);
+        }
+        if (easymdeInstances.has(id)) {
+            easymdeInstances.get(id)!.toTextArea();
+            easymdeInstances.delete(id);
+        }
     }
-    // Also destroy nested TipTap instances inside columns
     card.querySelectorAll<HTMLElement>('.block-card').forEach(nested => {
         const nid = nested.dataset.id;
-        if (nid && tiptapInstances.has(nid)) {
-            tiptapInstances.get(nid)!.destroy();
-            tiptapInstances.delete(nid);
+        if (nid) {
+            if (tiptapInstances.has(nid)) {
+                tiptapInstances.get(nid)!.destroy();
+                tiptapInstances.delete(nid);
+            }
+            if (easymdeInstances.has(nid)) {
+                easymdeInstances.get(nid)!.toTextArea();
+                easymdeInstances.delete(nid);
+            }
         }
     });
 }
@@ -475,7 +479,7 @@ function initSortable(list: HTMLElement, nested = false): void {
     });
 }
 
-// ─── TipTap ───────────────────────────────────────────────────────────────────
+// ─── TipTap (callout only) ────────────────────────────────────────────────────
 
 function spawnTipTap(el: HTMLElement, content: object | null): Editor {
     return new Editor({
@@ -485,6 +489,18 @@ function spawnTipTap(el: HTMLElement, content: object | null): Editor {
             Link.configure({ openOnClick: false }),
         ],
         content: content ?? undefined,
+    });
+}
+
+// ─── EasyMDE (text blocks) ────────────────────────────────────────────────────
+
+function spawnEasyMDE(el: HTMLTextAreaElement, content: string): EasyMDE {
+    return new EasyMDE({
+        element: el,
+        initialValue: content,
+        spellChecker: false,
+        toolbar: ['bold', 'italic', 'heading', '|', 'unordered-list', 'ordered-list', '|', 'link', '|', 'preview'],
+        status: false,
     });
 }
 

@@ -11,7 +11,7 @@
     --font-size-m:   clamp(1.6rem, 1.53rem + 0.19vw, 1.8rem);
     --font-size-l:   clamp(2.0rem, 1.67rem + 0.93vw, 3.0rem);
     --font-size-xl:  clamp(2.5rem, 1.73rem + 2.13vw, 4.8rem);
-    --font-size-xxl: clamp(3.2rem, 1.77rem + 3.98vw, 7.5rem);
+    --font-size-xxl: clamp(3.2rem, 1.77rem + 3.98vw, 8rem);
     //
     --font-lineheight-tight: 1;
     --font-lineheight-normal: 1.5;
@@ -67,16 +67,19 @@ h6 {
     @extend %font-base;
     line-height: var(--font-lineheight-tight);
     font-size: var(--font-size-l);
+    font-weight: bold;
 }
 
 %font-primary-xl {
     @extend %font-base;
     line-height: var(--font-lineheight-tight);
+    font-weight: bold;
     font-size: var(--font-size-xl);
 }
 
 %font-primary-xxl {
     @extend %font-base;
+    font-weight: bold;
     line-height: var(--font-lineheight-tight);
-    font-size: var(--font-size--xl);
+    font-size: var(--font-size-xxl);
 }
