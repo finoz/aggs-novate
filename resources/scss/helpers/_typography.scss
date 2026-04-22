@@ -51,6 +51,12 @@ h6 {
     
 }
 
+%font-primary-xs-uppercase {
+    @extend %font-primary-xs;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+}
+
 
 %font-primary-s {
     @extend %font-base;

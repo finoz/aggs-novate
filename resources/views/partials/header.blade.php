@@ -3,17 +3,17 @@
         <button class="siteheader-toggle" aria-controls="siteheader-nav" aria-label="Toggle main navigation">
             <span class="siteheader-toggle-inner"></span>
         </button>
-        <h1 class="siteheader-logo" aria-label="{{ config('app.name') }}">
-            @if(request()->routeIs('home'))
+        @if(request()->routeIs('home'))
+            <h1 class="siteheader-logo" aria-label="{{ config('app.name') }}">
                 <img src="{{ asset('images/main-logo.svg') }}" alt="">
                 <span>{{ config('app.name') }}</span>
+            </h1>
             @else    
-                <a href="{{ route('home') }}">
+                <a class="siteheader-logo" href="{{ route('home') }}">
                     <img src="{{ asset('images/main-logo.svg') }}" alt="">
                     <span>{{ config('app.name') }}</span>
                 </a>
             @endif
-        </h1>
         <nav id="siteheader-nav" class="siteheader-nav" role="navigation" aria-label="Main navigation">
             <ul class="menu">
                 @foreach($navPages as $navPage)

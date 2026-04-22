@@ -1,433 +1,578 @@
 @use 'helpers' as *;
 
-// ─── Admin layout ─────────────────────────────────────────────────────────────
+// ─── Token interni admin ─────────────────────────────────────────────────────
+
+$a-border:         rgba(0, 0, 0, 0.08);
+$a-border-focus:   rgba(0, 0, 0, 0.22);
+$a-border-strong:  rgba(0, 0, 0, 0.13);
+$a-bg-body:        #f5f6f8;
+$a-bg-surface:     #ffffff;
+$a-text-label:     #4c4c4c;
+$a-text-muted:     #a0a0a0;
+$a-shadow-card:    0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 8px rgba(0, 0, 0, 0.03);
+$a-shadow-lift:    0 4px 16px rgba(0, 0, 0, 0.10);
+
+// ─── Layout ──────────────────────────────────────────────────────────────────
+
 .admin-body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    background: $a-bg-body;
+    font-size: 1.6rem;
 }
 
 .admin-header {
-    padding: 1rem;
-    background-color: var(--color-bg-secondary);
+    background: $a-bg-surface;
+    border-bottom: 1px solid $a-border;
+    padding: 1.25rem 2rem;
+
     .container {
         display: flex;
         align-items: center;
-        gap: 2rem;
+        gap: 2.5rem;
     }
 }
 
 .admin-logo {
-    font-size: 1.0625rem;
+    font-size: 1.6rem;
     font-weight: 700;
     text-decoration: none;
+    letter-spacing: -0.01em;
+    color: var(--color-primary);
     white-space: nowrap;
 }
 
 .admin-nav {
     flex: 1;
     display: flex;
-    gap: 1rem;
+    gap: 0.25rem;
 
     a {
         text-decoration: none;
-        font-size: 0.9rem;
+        font-size: 1.5rem;
+        color: $a-text-label;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        transition: background 0.15s, color 0.15s;
 
-        &:hover, &.active { 
-            text-decoration: underline; 
+        &:hover {
+            background: $a-bg-body;
+            color: var(--color-primary);
+        }
+
+        &.active {
+            background: $a-bg-body;
+            color: var(--color-primary);
+            font-weight: 600;
         }
     }
 }
 
 .admin-logout button {
     background: none;
-    padding: 0.25rem 0.75rem;
-    border-radius: 3px;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 0.875rem;
+    font-size: 1.5rem;
+    color: $a-text-muted;
+    transition: color 0.15s, background 0.15s;
 
-}
-
-.admin-main {
-    padding: 1rem;
-    .container {
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
+    &:hover {
+        color: var(--color-primary);
+        background: $a-bg-body;
     }
 }
 
-// ─── Admin page header ────────────────────────────────────────────────────────
+.admin-main {
+    padding: 3rem 2rem;
+    flex: 1;
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+}
+
+// ─── Page header ─────────────────────────────────────────────────────────────
+
 .admin-page-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
     width: 100%;
-    max-width: 900px;
-    h1 { margin: 0; }
+    max-width: 960px;
+
+    h1 {
+        margin: 0;
+        font-size: 2.8rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+    }
 }
 
-// ─── Tabella admin ────────────────────────────────────────────────────────────
+// ─── Tabella ──────────────────────────────────────────────────────────────────
+
 .admin-table {
     width: 100%;
+    max-width: 960px;
     border-collapse: collapse;
-    background: white;
-    border-radius: 6px;
+    background: $a-bg-surface;
+    border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    box-shadow: $a-shadow-card;
 
     th, td {
-        padding: 0.75rem 1rem;
+        padding: 1.2rem 1.5rem;
         text-align: left;
-        border-bottom: 1px solid currentColor;
+        border-bottom: 1px solid $a-border;
+        font-size: 1.6rem;
     }
 
     th {
-        font-size: 0.8125rem;
-        font-weight: 700;
+        font-size: 1.1rem;
+        font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: 0.04em;
+        letter-spacing: 0.05em;
+        color: $a-text-muted;
+        background: rgba(0, 0, 0, 0.015);
     }
 
-    tbody tr:last-child td { border-bottom: none; }
+    tbody tr {
+        transition: background 0.1s;
+        &:hover { background: rgba(0, 0, 0, 0.018); }
+        &:last-child td { border-bottom: none; }
+    }
 
     .table-actions {
         display: flex;
-        gap: 0.75rem;
+        gap: 1rem;
         align-items: center;
     }
 }
 
 // ─── Badge ────────────────────────────────────────────────────────────────────
+
 .badge {
     display: inline-block;
-    padding: 0.2rem 0.6rem;
-    border-radius: 3px;
-    font-size: 0.8125rem;
+    padding: 0.3rem 0.85rem;
+    border-radius: 999px;
+    font-size: 1.2rem;
     font-weight: 600;
 
-    &--yes {
-        color: green;
-    }
-
-    &--no {
-    }
+    &--yes { color: #2e7d32; background: #e8f5e9; }
+    &--no  { color: $a-text-muted; background: rgba(0,0,0,0.05); }
 }
 
-// ─── Form admin ───────────────────────────────────────────────────────────────
+// ─── Form ─────────────────────────────────────────────────────────────────────
+
 .admin-form {
     width: 100%;
-    max-width: 640px;
-    background: white;
-    padding: 2rem;
-    border-radius: 6px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    max-width: 680px;
+    background: $a-bg-surface;
+    padding: 3.5rem;
+    border-radius: 12px;
+    box-shadow: $a-shadow-card;
     display: flex;
     flex-direction: column;
     gap: 2rem;
 }
 
+.admin-form--wide {
+    max-width: 960px;
+}
+
 .form-group {
-    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 
     label {
-        display: block;
+        font-size: 1.5rem;
         font-weight: 600;
-        font-size: 0.9rem;
-        margin-bottom: 0.35rem;
+        color: $a-text-label;
+        letter-spacing: 0.01em;
     }
 
-    .required { color: red; }
+    .required { color: #e53935; }
 }
 
 .form-control {
     display: block;
     width: 100%;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid #000;
-    border-radius: 4px;
+    padding: 1rem 1.25rem;
+    border: 1px solid $a-border;
+    border-radius: 7px;
     font-family: inherit;
-    transition: border-color 0.15s;
+    font-size: 1.8rem;
+    background: $a-bg-surface;
+    color: inherit;
+    transition: border-color 0.2s;
+
+    &:hover { border-color: $a-border-strong; }
 
     &:focus {
         outline: none;
+        border-color: $a-border-focus;
     }
 
-    &.is-invalid { border-color: red; }
+    &.is-invalid { border-color: #e53935; }
 }
 
-textarea.form-control { resize: vertical; }
+textarea.form-control { resize: vertical; min-height: 160px; }
+
+.form-control--narrow { max-width: 140px; }
 
 .form-error {
-    display: block;
-    color: red;
-    font-size: 0.8125rem;
-    margin-top: 0.25rem;
+    font-size: 1.3rem;
+    color: #e53935;
+}
+
+.form-hint {
+    font-size: 1.3rem;
+    color: $a-text-muted;
 }
 
 .form-group--checkbox label {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.6rem;
     font-weight: 400;
+    font-size: 1.8rem;
+    color: inherit;
     cursor: pointer;
-}
-
-.form-actions {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid currentColor;
-}
-
-// ─── Login ────────────────────────────────────────────────────────────────────
-.admin-body--login {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-}
-
-.login-card {
-    width: 100%;
-    max-width: 400px;
-    background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-
-    h1 {
-        font-size: 1.5rem;
-        margin-bottom: 0.25rem;
-    }
-
-    h2 {
-        font-size: 1.125rem;
-        font-weight: 400;
-        margin-bottom: 2rem;
-    }
-}
-
-// ─── Link button ──────────────────────────────────────────────────────────────
-.btn-link {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: inherit;
-    text-decoration: underline;
-    padding: 0;
-
-    &--danger { color: red }
-}
-
-// ─── Form wide (per pagine con editor) ────────────────────────────────────────
-.admin-form--wide {
-    max-width: 900px;
 }
 
 .form-row {
     display: flex;
     gap: 2rem;
     align-items: flex-start;
+
+    .form-group { flex: 1; }
 }
 
-.form-control--narrow {
-    max-width: 100px;
-}
+.form-actions {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid $a-border;
 
-.form-hint {
-    display: block;
-    font-size: 0.8125rem;
-    margin-top: 0.25rem;
+    a { font-size: 1.5rem; color: $a-text-muted; text-decoration: none; &:hover { color: inherit; } }
 }
 
 .slug-preview {
     display: flex;
     align-items: center;
-    border: 1px solid;
-    border-radius: 4px;
+    border: 1px solid $a-border;
+    border-radius: 7px;
     overflow: hidden;
+    transition: border-color 0.2s;
+
+    &:hover { border-color: $a-border-strong; }
+    &:focus-within { border-color: $a-border-focus; }
 
     &__base {
-        padding: 0.5rem 0.75rem;
-        border-right: 1px solid;
-        font-size: 0.875rem;
+        padding: 1rem 1.25rem;
+        border-right: 1px solid $a-border;
+        font-size: 1.8rem;
+        color: $a-text-muted;
         white-space: nowrap;
+        background: rgba(0,0,0,0.02);
     }
 
     .form-control {
         border: none;
         border-radius: 0;
         flex: 1;
-
-        &:focus { box-shadow: none; }
+        &:hover, &:focus { border-color: transparent; }
     }
 }
 
-// ─── TipTap Toolbar ───────────────────────────────────────────────────────────
+// ─── Empty state ──────────────────────────────────────────────────────────────
+
+.empty-state {
+    color: $a-text-muted;
+    font-size: 1.8rem;
+}
+
+// ─── Btn + link btn ───────────────────────────────────────────────────────────
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.9rem 1.8rem;
+    border-radius: 7px;
+    font-size: 1.7rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid $a-border;
+    background: $a-bg-surface;
+    color: $a-text-label;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+
+    &:hover {
+        border-color: $a-border-strong;
+        color: var(--color-primary);
+    }
+
+    &--primary {
+        background: var(--color-primary);
+        border-color: var(--color-primary);
+        color: var(--color-white);
+
+        &:hover {
+            opacity: 0.88;
+            color: var(--color-white);
+        }
+    }
+}
+
+.btn-link {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: inherit;
+    color: $a-text-muted;
+    text-decoration: none;
+    padding: 0;
+    transition: color 0.15s;
+
+    &:hover { color: inherit; }
+    &--danger { &:hover { color: #e53935; } }
+}
+
+// ─── Login ────────────────────────────────────────────────────────────────────
+
+.admin-body--login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: $a-bg-body;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 460px;
+    background: $a-bg-surface;
+    padding: 3.5rem;
+    border-radius: 14px;
+    box-shadow: $a-shadow-lift;
+
+    h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-bottom: 0.3rem;
+    }
+
+    h2 {
+        font-size: 1.7rem;
+        font-weight: 400;
+        color: $a-text-muted;
+        margin-bottom: 2.5rem;
+    }
+}
+
+// ─── Alert ────────────────────────────────────────────────────────────────────
+
+.alert {
+    width: 100%;
+    max-width: 960px;
+    padding: 1.1rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1.6rem;
+    margin-bottom: 1.75rem;
+
+    &--success {
+        background: #e8f5e9;
+        color: #2e7d32;
+        border: 1px solid rgba(46, 125, 50, 0.2);
+    }
+
+    &--error {
+        background: #ffebee;
+        color: #c62828;
+        border: 1px solid rgba(198, 40, 40, 0.2);
+
+        ul { list-style: disc; padding-left: 1.5rem; margin: 0; }
+        li { margin-bottom: 0.25rem; }
+    }
+}
+
+// ─── TipTap toolbar ───────────────────────────────────────────────────────────
+
 .tiptap-toolbar {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     gap: 2px;
-    padding: 0.4rem 0.5rem;
-    border-bottom: 1px solid;
-    border-radius: 4px 4px 0 0;
+    padding: 0.6rem 0.9rem;
+    border-bottom: 1px solid $a-border;
+    border-radius: 7px 7px 0 0;
+    background: rgba(0,0,0,0.015);
 
     button {
         background: none;
         border: 1px solid transparent;
-        border-radius: 3px;
+        border-radius: 5px;
         cursor: pointer;
-        padding: 0.2rem 0.5rem;
-        font-size: 0.875rem;
+        padding: 0.35rem 0.7rem;
+        font-size: 1.5rem;
         line-height: 1.4;
-        min-width: 28px;
+        min-width: 36px;
+        color: $a-text-label;
+        transition: background 0.12s, border-color 0.12s;
 
-        &:hover {
-            opacity: 0.8;
-        }
-        &.is-active {
-            color: white;
-        }
+        &:hover { background: rgba(0,0,0,0.06); border-color: $a-border; }
+        &.is-active { background: var(--color-primary); color: white; border-color: transparent; }
     }
 
     &__sep {
         width: 1px;
-        height: 1.25rem;
-        background: #000;
-        margin: 0 3px;
+        height: 1.4rem;
+        background: $a-border-strong;
+        margin: 0 5px;
     }
 }
 
-// ─── TipTap Editor ────────────────────────────────────────────────────────────
+// ─── TipTap editor ────────────────────────────────────────────────────────────
+
 .tiptap-editor {
-    border: 1px solid;
-    border-radius: 4px;
-    background: white;
+    border: 1px solid $a-border;
+    border-radius: 8px;
+    background: $a-bg-surface;
     min-height: 320px;
     cursor: text;
+    transition: border-color 0.2s;
 
-    &:focus-within {
-    }
+    &:hover { border-color: $a-border-strong; }
+    &:focus-within { border-color: $a-border-focus; }
 
-    // L'elemento .tiptap è l'area editabile generata da TipTap
     .tiptap {
+        padding: 1.25rem 1.5rem;
         outline: none;
         min-height: 280px;
+        font-size: 1.8rem;
 
-        // Tipografia nell'editor
-        h1 { font-size: 1.75rem; margin-bottom: 0.5rem; }
-        h2 { font-size: 1.375rem; margin-bottom: 0.5rem; }
-        h3 { font-size: 1.125rem; margin-bottom: 0.5rem; }
-        p  { margin-bottom: 0.75rem; }
-        ul, ol { padding-left: 1.5rem; margin-bottom: 0.75rem; }
-        li { margin-bottom: 0.25rem; }
-        a  {text-decoration: underline; }
+        h1 { font-size: 2.4rem; margin-bottom: 0.5rem; }
+        h2 { font-size: 2rem; margin-bottom: 0.5rem; }
+        h3 { font-size: 1.7rem; margin-bottom: 0.5rem; }
+        p  { margin-bottom: 0.75rem; &:last-child { margin-bottom: 0; } }
+        ul, ol { padding-left: 1.75rem; margin-bottom: 0.75rem; }
+        a  { text-decoration: underline; }
         blockquote {
-            border-left: 3px solid;
-            padding-left: 1rem;
+            border-left: 3px solid $a-border-strong;
+            padding-left: 1.1rem;
             font-style: italic;
+            color: $a-text-muted;
             margin: 0.75rem 0;
         }
         code {
+            background: rgba(0,0,0,0.05);
             padding: 0.1em 0.35em;
             border-radius: 3px;
             font-size: 0.875em;
         }
-        hr {
-            border: none;
-            border-top: 1px solid;
-            margin: 1rem 0;
-        }
+        hr { border: none; border-top: 1px solid $a-border; margin: 1.25rem 0; }
 
-        // Placeholder
         &.is-editor-empty:first-child::before {
             content: attr(data-placeholder);
             pointer-events: none;
             float: left;
             height: 0;
+            color: $a-text-muted;
         }
     }
 }
 
-// ─── Block Editor ─────────────────────────────────────────────────────────────
+// ─── Block editor ─────────────────────────────────────────────────────────────
 
 .block-editor {
-    border: 1px solid;
-    border-radius: 6px;
-    padding: 1rem;
+    border: 1px solid $a-border;
+    border-radius: 10px;
+    padding: 1.75rem;
+    background: $a-bg-body;
 }
 
 .block-list {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    min-height: 48px;
+    gap: 1rem;
+    min-height: 56px;
 
     &--nested {
-        min-height: 40px;
-        padding: 0.25rem;
-        background: rgba(white, 0.6);
-        border-radius: 4px;
+        min-height: 44px;
+        padding: 0.5rem;
+        background: rgba(255,255,255,0.7);
+        border-radius: 6px;
+        gap: 0.75rem;
     }
 }
 
 .block-card {
-    background: white;
-    border: 1px solid;
-    border-radius: 6px;
+    background: $a-bg-surface;
+    border: 1px solid $a-border;
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    box-shadow: $a-shadow-card;
 
-    &--ghost { opacity: 0.4; border-style: dashed; }
-    &--dragging { box-shadow: 0 4px 12px rgba(0,0,0,.15); }
+    &--ghost   { opacity: 0.35; border-style: dashed; }
+    &--dragging { box-shadow: $a-shadow-lift; }
 
     &__header {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
-        padding: 0.4rem 0.75rem;
-        border-bottom: 1px solid;
+        gap: 0.6rem;
+        padding: 0.65rem 1.1rem;
+        border-bottom: 1px solid $a-border;
+        background: rgba(0,0,0,0.015);
         user-select: none;
     }
 
     &__drag {
         cursor: grab;
-        font-size: 1.1rem;
+        font-size: 1.3rem;
         line-height: 1;
         padding: 0 0.2rem;
+        color: $a-text-muted;
         &:active { cursor: grabbing; }
     }
 
     &__label {
         flex: 1;
-        font-size: 0.8rem;
-        font-weight: 600;
+        font-size: 1rem;
+        font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.04em;
+        letter-spacing: 0.06em;
+        color: $a-text-muted;
     }
 
     &__delete {
         background: none;
         border: none;
         cursor: pointer;
-        font-size: 1.25rem;
+        font-size: 1.6rem;
         line-height: 1;
-        padding: 0 0.2rem;
-        &:hover { color: red; }
+        padding: 0.15rem 0.4rem;
+        color: $a-text-muted;
+        border-radius: 4px;
+        transition: color 0.15s, background 0.15s;
+
+        &:hover { color: #e53935; background: #ffebee; }
     }
 
     &__body {
-        padding: 1rem;
+        padding: 1.25rem 1.5rem;
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 0.75rem;
     }
 }
 
@@ -435,83 +580,98 @@ textarea.form-control { resize: vertical; }
 
 .block-fields-row {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.75rem;
     align-items: center;
 }
 
 .block-input {
-    padding: 0.35rem 0.6rem;
-    border: 1px solid;
-    border-radius: 4px;
-    font-size: 0.9rem;
+    padding: 0.7rem 1rem;
+    border: 1px solid $a-border;
+    border-radius: 6px;
+    font-size: 1.7rem;
     font-family: inherit;
-    background: white;
+    background: $a-bg-surface;
+    color: inherit;
     width: 100%;
+    transition: border-color 0.2s;
 
-    &:focus {
-        outline: none;
-    }
+    &:hover  { border-color: $a-border-strong; }
+    &:focus  { outline: none; border-color: $a-border-focus; }
 }
 
-select.block-input { width: auto; flex-shrink: 0; }
+textarea.block-input { resize: vertical; }
+select.block-input   { width: auto; flex-shrink: 0; }
+
+.block-placeholder-info {
+    font-size: 1.5rem;
+    color: $a-text-muted;
+    font-style: italic;
+    margin: 0;
+    padding: 0.5rem 0;
+}
+
+// ─── Block TipTap ─────────────────────────────────────────────────────────────
 
 .block-tiptap {
-    border: 1px solid;
-    border-radius: 4px;
-    background: white;
+    border: 1px solid $a-border;
+    border-radius: 6px;
+    background: $a-bg-surface;
     min-height: 120px;
     cursor: text;
+    transition: border-color 0.2s;
 
-    &:focus-within {
-    }
+    &:hover     { border-color: $a-border-strong; }
+    &:focus-within { border-color: $a-border-focus; }
 
     .tiptap {
-        padding: 0.5rem 0.75rem;
+        padding: 0.8rem 1rem;
         outline: none;
         min-height: 100px;
+        font-size: 1.7rem;
 
         p { margin-bottom: 0.5rem; &:last-child { margin-bottom: 0; } }
-        h1 { font-size: 1.5rem; }
-        h2 { font-size: 1.25rem; }
-        h3 { font-size: 1.1rem; }
-        ul, ol { padding-left: 1.5rem; }
+        ul, ol { padding-left: 1.75rem; }
         a { text-decoration: underline; }
     }
 }
 
-// ─── Block advanced options ───────────────────────────────────────────────────
+// ─── Block advanced ───────────────────────────────────────────────────────────
 
 .block-advanced {
     summary {
         cursor: pointer;
-        font-size: 0.78rem;
+        font-size: 1.3rem;
+        color: $a-text-muted;
         user-select: none;
+        &:hover { color: inherit; }
     }
 
     &__fields {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 0.5rem;
-        margin-top: 0.5rem;
+        gap: 0.6rem;
+        margin-top: 0.75rem;
 
         label {
-            font-size: 0.75rem;
+            font-size: 1.2rem;
+            color: $a-text-muted;
             display: block;
             margin-bottom: 0.2rem;
         }
     }
 }
 
-// ─── Image block ──────────────────────────────────────────────────────────────
+// ─── Block image ──────────────────────────────────────────────────────────────
 
 .block-image-wrap {
-    border: 1px dashed;
-    border-radius: 4px;
-    min-height: 80px;
+    border: 1px dashed $a-border-strong;
+    border-radius: 6px;
+    min-height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    background: rgba(0,0,0,0.015);
 
     img.block-image-preview {
         max-width: 100%;
@@ -521,25 +681,28 @@ select.block-input { width: auto; flex-shrink: 0; }
 }
 
 .block-image-placeholder {
-    font-size: 0.85rem;
+    font-size: 1.5rem;
+    color: $a-text-muted;
 }
 
 .block-upload-btn {
     display: inline-block;
     cursor: pointer;
-    padding: 0.3rem 0.75rem;
-    border: 1px solid;
-    border-radius: 4px;
-    background: white;
-    font-size: 0.85rem;
+    padding: 0.55rem 1.1rem;
+    border: 1px solid $a-border;
+    border-radius: 6px;
+    background: $a-bg-surface;
+    font-size: 1.5rem;
     white-space: nowrap;
-    &:hover {
-        
-    }
+    color: $a-text-label;
+    transition: border-color 0.15s, color 0.15s;
+
+    &:hover { border-color: $a-border-strong; color: var(--color-primary); }
 }
 
 .block-upload-status {
-    font-size: 0.8rem;
+    font-size: 1.3rem;
+    color: $a-text-muted;
 }
 
 // ─── Columns block editor ─────────────────────────────────────────────────────
@@ -552,33 +715,37 @@ select.block-input { width: auto; flex-shrink: 0; }
 
 .block-column-editor {
     flex: 1;
-    border: 1px solid;
-    border-radius: 4px;
+    border: 1px solid $a-border;
+    border-radius: 6px;
     overflow: hidden;
+    background: rgba(0,0,0,0.01);
 
     &__header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0.3rem 0.5rem;
-        border-bottom: 1px solid;
-        font-size: 0.75rem;
-        font-weight: 600;
+        padding: 0.5rem 0.85rem;
+        border-bottom: 1px solid $a-border;
+        font-size: 1rem;
+        font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.04em;
+        letter-spacing: 0.05em;
+        color: $a-text-muted;
     }
 }
 
-.block-column-add-buttons {
+.block-column-add-buttons,
+.block-group-add-buttons {
     display: flex;
-    gap: 3px;
+    flex-wrap: wrap;
+    gap: 4px;
 }
 
 .block-column-actions {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.6rem;
     justify-content: flex-end;
-    margin-top: 0.25rem;
+    margin-top: 0.5rem;
 }
 
 // ─── Add block buttons ────────────────────────────────────────────────────────
@@ -587,40 +754,41 @@ select.block-input { width: auto; flex-shrink: 0; }
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid;
+    gap: 0.6rem;
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid $a-border;
 
     &__label {
-        font-size: 0.8rem;
-        margin-right: 0.25rem;
+        font-size: 1.4rem;
+        color: $a-text-muted;
+        margin-right: 0.1rem;
     }
 }
 
 .block-add-btn {
     display: inline-block;
-    padding: 0.3rem 0.8rem;
-    border: 1px solid;
-    border-radius: 20px;
-    background: white;
-    font-size: 0.8rem;
+    padding: 0.5rem 1.2rem;
+    border: 1px solid $a-border;
+    border-radius: 999px;
+    background: $a-bg-surface;
+    font-size: 1.5rem;
     cursor: pointer;
+    color: $a-text-label;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
 
     &:hover {
+        border-color: var(--color-primary);
+        background: var(--color-primary);
         color: white;
     }
 
     &--sm {
-        padding: 0.15rem 0.5rem;
-        font-size: 0.7rem;
-        border-radius: 12px;
+        padding: 0.25rem 0.75rem;
+        font-size: 1.2rem;
     }
 
     &--danger {
-        &:hover {
-            background: red;
-            border-color: red;
-        }
+        &:hover { border-color: #e53935; background: #e53935; color: white; }
     }
 }

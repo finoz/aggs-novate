@@ -16,8 +16,9 @@
 		font-weight: normal;
 	}
 	.abstract {
+		position: relative;
+		padding-bottom: var(--space-l);
 		@include breakpoint('tablet-landscape') {
-			position: relative;
 			&::before {
 				content: '';
 				display: block;
