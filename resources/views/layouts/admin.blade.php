@@ -17,6 +17,9 @@
             <a href="{{ route('admin.pages.index') }}" @class(['active' => request()->routeIs('admin.pages.*')])>
                 Pagine
             </a>
+            <a href="{{ route('admin.notices.index') }}" @class(['active' => request()->routeIs('admin.notices.*')])>
+                Avvisi
+            </a>
         </nav>
         <form method="POST" action="{{ route('admin.logout') }}" class="admin-logout">
             @csrf

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
+use App\Http\Controllers\Admin\NoticeController as AdminNoticeController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\UploadController;
 use App\Http\Controllers\PageController;
@@ -21,6 +22,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware('auth')->group(function () {
         Route::get('/', fn () => redirect()->route('admin.pages.index'));
         Route::resource('pages', AdminPageController::class);
+        Route::resource('notices', AdminNoticeController::class);
         Route::post('upload', [UploadController::class, 'store'])->name('upload');
     });
 });

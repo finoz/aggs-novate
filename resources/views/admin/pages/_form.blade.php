@@ -81,6 +81,11 @@
             <button type="button" class="block-add-btn" data-add-block="image">&#43; Immagine</button>
             <button type="button" class="block-add-btn" data-add-block="callout">&#43; Callout</button>
             <button type="button" class="block-add-btn" data-add-block="columns">&#43; Colonne</button>
+            <button type="button" class="block-add-btn" data-add-block="group">&#43; Gruppo</button>
+            <button type="button" class="block-add-btn" data-add-block="button">&#43; Bottone</button>
+            <button type="button" class="block-add-btn" data-add-block="quote">&#43; Citazione</button>
+            <button type="button" class="block-add-btn" data-add-block="calendar_item">&#43; Evento</button>
+            <button type="button" class="block-add-btn" data-add-block="notice_list">&#43; Lista avvisi</button>
         </div>
     </div>
     <input

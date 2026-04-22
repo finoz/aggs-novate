@@ -20,7 +20,7 @@ import 'easymde/dist/easymde.min.css';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type BlockType = 'heading' | 'text' | 'image' | 'callout' | 'columns';
+type BlockType = 'heading' | 'text' | 'image' | 'callout' | 'columns' | 'group' | 'button' | 'quote' | 'calendar_item' | 'notice_list';
 
 interface BaseBlock {
     id: string;
@@ -63,8 +63,40 @@ interface ColumnsBlock extends BaseBlock {
     columns: ColumnData[];
 }
 
-type NestedBlock = HeadingBlock | TextBlock | ImageBlock | CalloutBlock;
-type Block = NestedBlock | ColumnsBlock;
+interface GroupBlock extends BaseBlock {
+    type: 'group';
+    style: 'default' | 'card' | 'accent' | 'dark';
+    layout: 'stack' | 'grid-2' | 'grid-3' | 'side';
+    blocks: NestedBlock[];
+}
+
+interface ButtonBlock extends BaseBlock {
+    type: 'button';
+    label: string;
+    href: string;
+    target: '_self' | '_blank';
+    variant: 'primary' | 'secondary' | 'outline';
+}
+
+interface QuoteBlock extends BaseBlock {
+    type: 'quote';
+    content: string;
+    author?: string;
+    source?: string;
+}
+
+interface CalendarItemBlock extends BaseBlock {
+    type: 'calendar_item';
+    date: string;
+    text: string;
+}
+
+interface NoticeListBlock extends BaseBlock {
+    type: 'notice_list';
+}
+
+type NestedBlock = HeadingBlock | TextBlock | ImageBlock | CalloutBlock | ButtonBlock | QuoteBlock | CalendarItemBlock;
+type Block = NestedBlock | ColumnsBlock | GroupBlock | NoticeListBlock;
 
 // ─── State ────────────────────────────────────────────────────────────────────
 
@@ -136,6 +168,11 @@ function makeDefaultBlock(type: BlockType): Block {
             ],
             class: '', htmlId: '',
         };
+        case 'group':        return { id, type, style: 'default', layout: 'stack', blocks: [], class: '', htmlId: '' };
+        case 'button':       return { id, type, label: '', href: '', target: '_self', variant: 'primary', class: '', htmlId: '' };
+        case 'quote':        return { id, type, content: '', author: '', source: '', class: '', htmlId: '' };
+        case 'calendar_item': return { id, type, date: '', text: '', class: '', htmlId: '' };
+        case 'notice_list':  return { id, type, class: '', htmlId: '' };
     }
 }
 
@@ -170,11 +207,16 @@ function renderBlock(block: Block, nested = false): HTMLElement {
 
 function blockLabel(type: BlockType): string {
     const labels: Record<BlockType, string> = {
-        heading: 'Titolo',
-        text:    'Testo',
-        image:   'Immagine',
-        callout: 'Callout',
-        columns: 'Colonne',
+        heading:       'Titolo',
+        text:          'Testo',
+        image:         'Immagine',
+        callout:       'Callout',
+        columns:       'Colonne',
+        group:         'Gruppo',
+        button:        'Bottone',
+        quote:         'Citazione',
+        calendar_item: 'Evento',
+        notice_list:   'Lista avvisi',
     };
     return labels[type];
 }
@@ -242,6 +284,74 @@ function renderBlockBody(block: Block, nested: boolean): string {
                 <div class="block-tiptap" data-tiptap></div>
                 ${advancedFields}`;
 
+        case 'button':
+            return `
+                <div class="block-fields-row">
+                    <input type="text" class="block-input block-field-label" placeholder="Testo del bottone…" value="${escHtml(block.label)}">
+                    <input type="text" class="block-input block-field-href" placeholder="URL (es. /chi-siamo o https://…)" value="${escHtml(block.href)}">
+                </div>
+                <div class="block-fields-row">
+                    <select class="block-input block-field-target">
+                        <option value="_self"${block.target === '_self' ? ' selected' : ''}>Stessa finestra</option>
+                        <option value="_blank"${block.target === '_blank' ? ' selected' : ''}>Nuova finestra</option>
+                    </select>
+                    <select class="block-input block-field-variant">
+                        ${(['primary','secondary','outline'] as const).map(v =>
+                            `<option value="${v}"${block.variant === v ? ' selected' : ''}>${v}</option>`
+                        ).join('')}
+                    </select>
+                </div>
+                ${advancedFields}`;
+
+        case 'quote':
+            return `
+                <textarea class="block-input block-field-content" rows="4" placeholder="Testo della citazione…">${escHtml(block.content)}</textarea>
+                <div class="block-fields-row">
+                    <input type="text" class="block-input block-field-author" placeholder="Autore (facoltativo)" value="${escHtml(block.author ?? '')}">
+                    <input type="text" class="block-input block-field-source" placeholder="Fonte / opera (facoltativa)" value="${escHtml(block.source ?? '')}">
+                </div>
+                ${advancedFields}`;
+
+        case 'calendar_item':
+            return `
+                <input type="text" class="block-input block-field-date" placeholder="Data (es. 15 marzo 2025)" value="${escHtml(block.date)}">
+                <textarea class="block-input block-field-text" rows="3" placeholder="Testo dell'evento…">${escHtml(block.text)}</textarea>
+                ${advancedFields}`;
+
+        case 'notice_list':
+            return `<p class="block-placeholder-info">Lista avvisi — renderizzata dinamicamente dal server.</p>
+                ${advancedFields}`;
+
+        case 'group': {
+            const groupBlocksHtml = block.blocks.map(sub => renderBlock(sub, true).outerHTML).join('');
+            return `
+                <div class="block-fields-row">
+                    <select class="block-input block-field-style">
+                        ${(['default','card','accent','dark'] as const).map(v =>
+                            `<option value="${v}"${block.style === v ? ' selected' : ''}>${v}</option>`
+                        ).join('')}
+                    </select>
+                    <select class="block-input block-field-layout">
+                        ${(['stack','grid-2','grid-3','side'] as const).map(v =>
+                            `<option value="${v}"${block.layout === v ? ' selected' : ''}>${v}</option>`
+                        ).join('')}
+                    </select>
+                </div>
+                <div class="block-group-add-buttons">
+                    <button type="button" class="block-add-btn block-add-btn--sm" data-add-nested="heading">+Titolo</button>
+                    <button type="button" class="block-add-btn block-add-btn--sm" data-add-nested="text">+Testo</button>
+                    <button type="button" class="block-add-btn block-add-btn--sm" data-add-nested="image">+Immagine</button>
+                    <button type="button" class="block-add-btn block-add-btn--sm" data-add-nested="callout">+Callout</button>
+                    <button type="button" class="block-add-btn block-add-btn--sm" data-add-nested="button">+Bottone</button>
+                    <button type="button" class="block-add-btn block-add-btn--sm" data-add-nested="quote">+Citazione</button>
+                    <button type="button" class="block-add-btn block-add-btn--sm" data-add-nested="calendar_item">+Evento</button>
+                </div>
+                <div class="block-list block-list--nested" data-nested-list>
+                    ${groupBlocksHtml}
+                </div>
+                ${advancedFields}`;
+        }
+
         case 'columns': {
             const colsHtml = block.columns.map(col => `
                 <div class="block-column-editor" data-col-id="${col.id}">
@@ -290,6 +400,10 @@ function afterInsert(card: HTMLElement, block: Block, nested: boolean): void {
 
     if (block.type === 'columns' && !nested) {
         wireColumnsBlock(card, block as ColumnsBlock);
+    }
+
+    if (block.type === 'group' && !nested) {
+        wireGroupBlock(card, block as GroupBlock);
     }
 }
 
@@ -386,6 +500,20 @@ function wireColumnsBlock(card: HTMLElement, block: ColumnsBlock): void {
     });
 }
 
+function wireGroupBlock(card: HTMLElement, _block: GroupBlock): void {
+    const nestedList = card.querySelector<HTMLElement>('[data-nested-list]')!;
+    initSortable(nestedList, true);
+
+    card.querySelectorAll<HTMLButtonElement>('[data-add-nested]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const type = btn.dataset.addNested as BlockType;
+            if (type === 'columns' || type === 'group' || type === 'notice_list') return;
+            const nestedBlock = makeDefaultBlock(type) as NestedBlock;
+            nestedList.appendChild(renderBlock(nestedBlock, true));
+        });
+    });
+}
+
 // ─── Serialization ────────────────────────────────────────────────────────────
 
 function serializeBlockList(list: HTMLElement, nested: boolean): Block[] {
@@ -423,6 +551,40 @@ function serializeCard(card: HTMLElement, nested: boolean): Block {
             variant: (card.querySelector<HTMLSelectElement>('.block-field-variant')?.value ?? 'info') as CalloutBlock['variant'],
             content: tiptapInstances.get(id)?.getJSON() ?? null,
         };
+
+        case 'button': return {
+            id, type, class: cls, htmlId: hid,
+            label:   card.querySelector<HTMLInputElement>('.block-field-label')!.value,
+            href:    card.querySelector<HTMLInputElement>('.block-field-href')!.value,
+            target:  (card.querySelector<HTMLSelectElement>('.block-field-target')?.value ?? '_self') as ButtonBlock['target'],
+            variant: (card.querySelector<HTMLSelectElement>('.block-field-variant')?.value ?? 'primary') as ButtonBlock['variant'],
+        };
+
+        case 'quote': return {
+            id, type, class: cls, htmlId: hid,
+            content: card.querySelector<HTMLTextAreaElement>('.block-field-content')?.value ?? '',
+            author:  card.querySelector<HTMLInputElement>('.block-field-author')?.value ?? '',
+            source:  card.querySelector<HTMLInputElement>('.block-field-source')?.value ?? '',
+        };
+
+        case 'calendar_item': return {
+            id, type, class: cls, htmlId: hid,
+            date: card.querySelector<HTMLInputElement>('.block-field-date')?.value ?? '',
+            text: card.querySelector<HTMLTextAreaElement>('.block-field-text')?.value ?? '',
+        };
+
+        case 'notice_list': return { id, type, class: cls, htmlId: hid };
+
+        case 'group': {
+            const nestedList = card.querySelector<HTMLElement>(':scope > .block-card__body > [data-nested-list]')
+                ?? card.querySelector<HTMLElement>('[data-nested-list]')!;
+            return {
+                id, type, class: cls, htmlId: hid,
+                style:  (card.querySelector<HTMLSelectElement>('.block-field-style')?.value ?? 'default') as GroupBlock['style'],
+                layout: (card.querySelector<HTMLSelectElement>('.block-field-layout')?.value ?? 'stack') as GroupBlock['layout'],
+                blocks: serializeBlockList(nestedList, true) as NestedBlock[],
+            };
+        }
 
         case 'columns': {
             const columns: ColumnData[] = [];
