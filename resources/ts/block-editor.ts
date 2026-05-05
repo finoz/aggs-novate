@@ -89,6 +89,8 @@ interface CalendarItemBlock extends BaseBlock {
     type: 'calendar_item';
     date: string;
     text: string;
+    link?: string;
+    detail?: string;
 }
 
 interface NoticeListBlock extends BaseBlock {
@@ -171,7 +173,7 @@ function makeDefaultBlock(type: BlockType): Block {
         case 'group':        return { id, type, style: 'default', layout: 'stack', blocks: [], class: '', htmlId: '' };
         case 'button':       return { id, type, label: '', href: '', target: '_self', variant: 'primary', class: '', htmlId: '' };
         case 'quote':        return { id, type, content: '', author: '', source: '', class: '', htmlId: '' };
-        case 'calendar_item': return { id, type, date: '', text: '', class: '', htmlId: '' };
+        case 'calendar_item': return { id, type, date: '', text: '', link: '', detail: '', class: '', htmlId: '' };
         case 'notice_list':  return { id, type, class: '', htmlId: '' };
     }
 }
@@ -312,11 +314,31 @@ function renderBlockBody(block: Block, nested: boolean): string {
                 </div>
                 ${advancedFields}`;
 
-        case 'calendar_item':
+        case 'calendar_item': {
+            const calendarAdvanced = `
+                <details class="block-advanced">
+                    <summary>Avanzato</summary>
+                    <div class="block-advanced__fields">
+                        <div class="block-field">
+                            <label>Link</label>
+                            <input type="url" class="block-input block-field-link" placeholder="https://…" value="${escHtml(block.link ?? '')}">
+                        </div>
+                        <div class="block-field">
+                            <label>CSS class</label>
+                            <input type="text" class="block-input block-field-class" placeholder="mia-classe" value="${escHtml(block.class ?? '')}">
+                        </div>
+                        <div class="block-field">
+                            <label>ID HTML</label>
+                            <input type="text" class="block-input block-field-htmlid" placeholder="sezione-intro" value="${escHtml(block.htmlId ?? '')}">
+                        </div>
+                    </div>
+                </details>`;
             return `
                 <input type="text" class="block-input block-field-date" placeholder="Data (es. 15 marzo 2025)" value="${escHtml(block.date)}">
                 <textarea class="block-input block-field-text" rows="3" placeholder="Testo dell'evento…">${escHtml(block.text)}</textarea>
-                ${advancedFields}`;
+                <textarea class="block-input block-field-detail" rows="2" placeholder="Dettaglio">${escHtml(block.detail ?? '')}</textarea>
+                ${calendarAdvanced}`;
+        }
 
         case 'notice_list':
             return `<p class="block-placeholder-info">Lista avvisi — renderizzata dinamicamente dal server.</p>
@@ -571,6 +593,8 @@ function serializeCard(card: HTMLElement, nested: boolean): Block {
             id, type, class: cls, htmlId: hid,
             date: card.querySelector<HTMLInputElement>('.block-field-date')?.value ?? '',
             text: card.querySelector<HTMLTextAreaElement>('.block-field-text')?.value ?? '',
+            link: card.querySelector<HTMLInputElement>('.block-field-link')?.value ?? '',
+            detail: card.querySelector<HTMLTextAreaElement>('.block-field-detail')?.value ?? '',
         };
 
         case 'notice_list': return { id, type, class: cls, htmlId: hid };

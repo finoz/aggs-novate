@@ -176,8 +176,19 @@
     white-space: nowrap;
 }
 
+.calendar-item__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
 .calendar-item__text {
     font-size: var(--font-size-m);
+}
+
+.calendar-item__detail {
+    font-size: var(--font-size-s);
+    color: var(--color-text-secondary);
 }
 
 // ─── Notice list block ────────────────────────────────────────────────────────
