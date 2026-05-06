@@ -22,6 +22,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // ─── Admin: area protetta ─────────────────────────────────────────────────
     Route::middleware('auth')->group(function () {
         Route::get('/', fn () => redirect()->route('admin.pages.index'));
+        Route::post('pages/reorder', [AdminPageController::class, 'reorder'])->name('pages.reorder');
         Route::resource('pages', AdminPageController::class);
         Route::resource('notices', AdminNoticeController::class);
         Route::post('notices/{notice}/duplicate', [AdminNoticeController::class, 'duplicate'])->name('notices.duplicate');

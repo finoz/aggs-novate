@@ -14,6 +14,7 @@ class Page extends Model
         'titolo',
         'contenuto',
         'pubblicata',
+        'in_menu',
         'ordinamento',
     ];
 
@@ -22,11 +23,17 @@ class Page extends Model
         return [
             'contenuto'  => 'array',
             'pubblicata' => 'boolean',
+            'in_menu'    => 'boolean',
         ];
     }
 
     public function scopePubblicate(Builder $query): Builder
     {
         return $query->where('pubblicata', true);
+    }
+
+    public function scopeInMenu(Builder $query): Builder
+    {
+        return $query->where('pubblicata', true)->where('in_menu', true);
     }
 }

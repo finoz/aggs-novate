@@ -13,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('layouts.app', function ($view) {
-            $view->with('navPages', Page::pubblicate()->orderBy('ordinamento')->get());
+            $view->with('navPages', Page::inMenu()->orderBy('ordinamento')->get());
         });
     }
 }

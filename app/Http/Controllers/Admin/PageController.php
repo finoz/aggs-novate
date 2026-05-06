@@ -31,10 +31,12 @@ class PageController extends Controller
             'titolo'      => ['required', 'string', 'max:255'],
             'contenuto'   => ['nullable', 'string'],
             'pubblicata'  => ['boolean'],
+            'in_menu'     => ['boolean'],
             'ordinamento' => ['integer', 'min:0'],
         ]);
 
         $data['pubblicata'] = $request->boolean('pubblicata');
+        $data['in_menu']    = $request->boolean('in_menu');
         $data['contenuto']  = $data['contenuto'] ? json_decode($data['contenuto'], true) : null;
 
         Page::create($data);
@@ -55,16 +57,32 @@ class PageController extends Controller
             'titolo'      => ['required', 'string', 'max:255'],
             'contenuto'   => ['nullable', 'string'],
             'pubblicata'  => ['boolean'],
+            'in_menu'     => ['boolean'],
             'ordinamento' => ['integer', 'min:0'],
         ]);
 
         $data['pubblicata'] = $request->boolean('pubblicata');
+        $data['in_menu']    = $request->boolean('in_menu');
         $data['contenuto']  = $data['contenuto'] ? json_decode($data['contenuto'], true) : null;
 
         $page->update($data);
 
         return redirect()->route('admin.pages.edit', $page)
             ->with('success', 'Pagina aggiornata.');
+    }
+
+    public function reorder(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'order'   => ['required', 'array'],
+            'order.*' => ['integer', 'min:0'],
+        ]);
+
+        foreach ($request->input('order') as $id => $ord) {
+            Page::where('id', (int) $id)->update(['ordinamento' => $ord]);
+        }
+
+        return back()->with('success', 'Ordine aggiornato.');
     }
 
     public function destroy(Page $page): RedirectResponse

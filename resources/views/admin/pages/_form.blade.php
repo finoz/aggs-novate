@@ -39,7 +39,7 @@
 
 <div class="form-row">
     <div class="form-group">
-        <label for="ordinamento">Ordine nel menu</label>
+        <label for="ordinamento">Ordine</label>
         <input
             id="ordinamento"
             type="number"
@@ -61,7 +61,19 @@
                 value="1"
                 {{ old('pubblicata', $page->pubblicata ?? true) ? 'checked' : '' }}
             >
-            Pubblicata (visibile nel sito e nel menu)
+            Pubblicata <span class="form-hint">visibile sul sito</span>
+        </label>
+    </div>
+
+    <div class="form-group form-group--checkbox">
+        <label>
+            <input
+                type="checkbox"
+                name="in_menu"
+                value="1"
+                {{ old('in_menu', $page->in_menu ?? true) ? 'checked' : '' }}
+            >
+            Visibile in menu <span class="form-hint">appare nella navigazione</span>
         </label>
     </div>
 </div>
