@@ -2,6 +2,7 @@
 
 .site-main {
 	@extend %main-container;
+	min-height: 80vh;
 }
 .page-body {
 	display: flex;

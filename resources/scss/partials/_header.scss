@@ -14,7 +14,7 @@
     justify-content: center;
     flex-shrink: 0;
 	height: var(--header-height);
-	background-color: var(--color-default-bg);
+	background-color: var(--color-bg-default);
 	@include breakpoint(tablet-landscape) {
 		height: var(--header-height-desktop);
 		transition: all 0.3s ease;

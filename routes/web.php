@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\NoticeController as AdminNoticeController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\UploadController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('notices', AdminNoticeController::class);
         Route::post('notices/{notice}/duplicate', [AdminNoticeController::class, 'duplicate'])->name('notices.duplicate');
         Route::post('upload', [UploadController::class, 'store'])->name('upload');
+
+        Route::middleware('master')->resource('users', AdminUserController::class)->except(['show']);
     });
 });
 

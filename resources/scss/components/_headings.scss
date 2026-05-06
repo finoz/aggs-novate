@@ -18,6 +18,14 @@
 	.abstract {
 		position: relative;
 		padding-bottom: var(--space-l);
+		[href*="mailto:"] {
+			font-family: var(--font-family-secondary);
+			font-weight: bold;
+			font-style: italic;
+			&:hover {
+				color: var(--color-accent);
+			}
+		}
 		@include breakpoint('tablet-landscape') {
 			&::before {
 				content: '';

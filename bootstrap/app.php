@@ -18,6 +18,7 @@ $app = Application::configure(basePath: $basePath)
             \App\Http\Middleware\MaintenanceMode::class,
         ]);
         $middleware->redirectGuestsTo(fn () => route('admin.login'));
+        $middleware->alias(['master' => \App\Http\Middleware\EnsureMasterRole::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

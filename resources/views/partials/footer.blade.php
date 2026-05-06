@@ -1,4 +1,4 @@
-<footer class="site-footer">
+<footer class="sitefooter">
     <h2 class="visually-hidden">Footer</h2>
     <div class="sitefooter-inner">
         <p>&copy; {{ date('Y') }} {{ config('app.name') }}</p>

@@ -20,6 +20,11 @@
             <a href="{{ route('admin.notices.index') }}" @class(['active' => request()->routeIs('admin.notices.*')])>
                 Avvisi
             </a>
+            @if (auth()->user()?->hasRole('master'))
+            <a href="{{ route('admin.users.index') }}" @class(['active' => request()->routeIs('admin.users.*')])>
+                Utenti
+            </a>
+            @endif
         </nav>
         <form method="POST" action="{{ route('admin.logout') }}" class="admin-logout">
             @csrf
@@ -33,6 +38,10 @@
 
         @if (session('success'))
             <div class="alert alert--success">{{ session('success') }}</div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert--error">{{ session('error') }}</div>
         @endif
 
         @if ($errors->any())
