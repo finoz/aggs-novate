@@ -8,7 +8,15 @@
 
 // ─── Heading block ────────────────────────────────────────────────────────────
 
-.block--heading {}
+.block--heading {
+    &.heading--cal {
+        font-family: var(--font-family-helper);
+        @extend %font-primary-xs-uppercase;
+        color: var(--color-secondary);
+        border-top: 1px solid var(--color-bg-secondary);
+        padding-top: var(--space-s);
+    }
+}
 
 // ─── Text block ───────────────────────────────────────────────────────────────
 
@@ -159,36 +167,41 @@
 // ─── Calendar item block ──────────────────────────────────────────────────────
 
 .block--calendar-item {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: var(--space-s) var(--space-m);
-    align-items: baseline;
-    padding-block: var(--space-s);
-    border-top: 1px solid var(--color-bg-secondary);
-
-    &:first-of-type { border-top: none; }
-}
-
-.calendar-item__date {
-    font-size: var(--font-size-s);
-    font-weight: 600;
-    color: var(--color-primary);
-    white-space: nowrap;
-}
-
-.calendar-item__body {
     display: flex;
     flex-direction: column;
-    gap: var(--space-xs);
+    gap: var(--space-s);
+    align-items: baseline;
+    padding-bottom: var(--space-s);
+    @include breakpoint('tablet-portrait') {
+        flex-direction: row;
+        align-items: center;
+    }
+    & + & {
+        padding-top: var(--space-s);
+        border-top: 1px solid var(--color-bg-secondary);
+    }
 }
-
-.calendar-item__text {
-    font-size: var(--font-size-m);
-}
-
-.calendar-item__detail {
-    font-size: var(--font-size-s);
-    color: var(--color-text-secondary);
+.calendar-item {
+    &__date,
+    &__detail {
+        font-size: var(--font-size-xs);
+        color: var(--color-text-dull);
+    }
+     &__date {
+        @include breakpoint('tablet-portrait') {
+            width: 15%;
+        }
+     }
+    &__body {
+    }
+    &__text {
+        font-size: var(--font-size-m);
+        font-weight: bold;
+        
+    }
+    &__detail {
+        
+    }
 }
 
 // ─── Notice list block ────────────────────────────────────────────────────────
