@@ -16,7 +16,6 @@
             <tr>
                 <th>Data</th>
                 <th>Titolo</th>
-                <th>Tag</th>
                 <th>Ordine</th>
                 <th>Azioni</th>
             </tr>
@@ -26,10 +25,13 @@
             <tr>
                 <td>{{ $notice->date }}</td>
                 <td>{{ $notice->heading }}</td>
-                <td>{{ $notice->tag ?? '—' }}</td>
                 <td>{{ $notice->ordinamento }}</td>
                 <td class="table-actions">
                     <a href="{{ route('admin.notices.edit', $notice) }}">Modifica</a>
+                    <form method="POST" action="{{ route('admin.notices.duplicate', $notice) }}">
+                        @csrf
+                        <button type="submit" class="btn-link">Duplica</button>
+                    </form>
                     <form method="POST" action="{{ route('admin.notices.destroy', $notice) }}"
                           data-confirm="Eliminare l'avviso &quot;{{ $notice->heading }}&quot;?">
                         @csrf

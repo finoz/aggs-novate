@@ -3,6 +3,7 @@
  */
 
 import { initBlockEditor } from './block-editor';
+import EasyMDE from 'easymde';
 
 // ─── Block Editor (admin: form pagine) ────────────────────────────────────────
 const blockEditorEl = document.getElementById('block-editor');
@@ -24,6 +25,16 @@ if (blockEditorEl) {
 
     initBlockEditor(blockEditorEl, hiddenInput);
 }
+
+// ─── EasyMDE su campi testo negli avvisi ──────────────────────────────────────
+document.querySelectorAll<HTMLTextAreaElement>('textarea[data-markdown-field]').forEach(ta => {
+    new EasyMDE({
+        element: ta,
+        spellChecker: false,
+        toolbar: ['bold', 'italic', 'heading', '|', 'unordered-list', 'ordered-list', '|', 'link', '|', 'preview'],
+        status: false,
+    });
+});
 
 // ─── Conferma prima di eliminare (form con method DELETE) ─────────────────────
 document.querySelectorAll<HTMLFormElement>('form[data-confirm]').forEach((form) => {

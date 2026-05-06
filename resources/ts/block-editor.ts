@@ -95,6 +95,7 @@ interface CalendarItemBlock extends BaseBlock {
 
 interface NoticeListBlock extends BaseBlock {
     type: 'notice_list';
+    title?: string;
 }
 
 type NestedBlock = HeadingBlock | TextBlock | ImageBlock | CalloutBlock | ButtonBlock | QuoteBlock | CalendarItemBlock;
@@ -174,7 +175,7 @@ function makeDefaultBlock(type: BlockType): Block {
         case 'button':       return { id, type, label: '', href: '', target: '_self', variant: 'primary', class: '', htmlId: '' };
         case 'quote':        return { id, type, content: '', author: '', source: '', class: '', htmlId: '' };
         case 'calendar_item': return { id, type, date: '', text: '', link: '', detail: '', class: '', htmlId: '' };
-        case 'notice_list':  return { id, type, class: '', htmlId: '' };
+        case 'notice_list':  return { id, type, title: '', class: '', htmlId: '' };
     }
 }
 
@@ -346,7 +347,11 @@ function renderBlockBody(block: Block, nested: boolean): string {
         }
 
         case 'notice_list':
-            return `<p class="block-placeholder-info">Lista avvisi — renderizzata dinamicamente dal server.</p>
+            return `
+                <div class="block-field">
+                    <input type="text" class="block-input block-field-title" placeholder="Titolo (facoltativo, renderizzato come H2)" value="${escHtml(block.title ?? '')}">
+                </div>
+                <p class="block-placeholder-info">Lista avvisi — renderizzata dinamicamente dal server.</p>
                 ${advancedFields}`;
 
         case 'group': {
@@ -602,7 +607,10 @@ function serializeCard(card: HTMLElement, nested: boolean): Block {
             detail: card.querySelector<HTMLTextAreaElement>('.block-field-detail')?.value ?? '',
         };
 
-        case 'notice_list': return { id, type, class: cls, htmlId: hid };
+        case 'notice_list': return {
+            id, type, class: cls, htmlId: hid,
+            title: card.querySelector<HTMLInputElement>('.block-field-title')?.value ?? '',
+        };
 
         case 'group': {
             const nestedList = card.querySelector<HTMLElement>(':scope > .block-card__body > [data-nested-list]')

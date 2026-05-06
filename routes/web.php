@@ -23,6 +23,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/', fn () => redirect()->route('admin.pages.index'));
         Route::resource('pages', AdminPageController::class);
         Route::resource('notices', AdminNoticeController::class);
+        Route::post('notices/{notice}/duplicate', [AdminNoticeController::class, 'duplicate'])->name('notices.duplicate');
         Route::post('upload', [UploadController::class, 'store'])->name('upload');
     });
 });

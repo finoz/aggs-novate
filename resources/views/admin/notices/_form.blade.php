@@ -14,35 +14,32 @@
     @error('heading')<span class="form-error">{{ $message }}</span>@enderror
 </div>
 
-<div class="form-row">
-    <div class="form-group">
-        <label for="date">Data <span class="required">*</span></label>
-        <input
-            id="date"
-            type="text"
-            name="date"
-            value="{{ old('date', $notice->date ?? '') }}"
-            required
-            maxlength="255"
-            placeholder="es. 22 aprile 2026"
-            class="form-control @error('date') is-invalid @enderror"
-        >
-        @error('date')<span class="form-error">{{ $message }}</span>@enderror
-    </div>
+<div class="form-group">
+    <label for="subheading">Sottotitolo</label>
+    <input
+        id="subheading"
+        type="text"
+        name="subheading"
+        value="{{ old('subheading', $notice->subheading ?? '') }}"
+        maxlength="255"
+        class="form-control @error('subheading') is-invalid @enderror"
+    >
+    @error('subheading')<span class="form-error">{{ $message }}</span>@enderror
+</div>
 
-    <div class="form-group">
-        <label for="tag">Tag</label>
-        <input
-            id="tag"
-            type="text"
-            name="tag"
-            value="{{ old('tag', $notice->tag ?? '') }}"
-            maxlength="100"
-            placeholder="es. Comunicazione"
-            class="form-control @error('tag') is-invalid @enderror"
-        >
-        @error('tag')<span class="form-error">{{ $message }}</span>@enderror
-    </div>
+<div class="form-group">
+    <label for="date">Data <span class="required">*</span></label>
+    <input
+        id="date"
+        type="text"
+        name="date"
+        value="{{ old('date', $notice->date ?? '') }}"
+        required
+        maxlength="255"
+        placeholder="es. 22 aprile 2026"
+        class="form-control @error('date') is-invalid @enderror"
+    >
+    @error('date')<span class="form-error">{{ $message }}</span>@enderror
 </div>
 
 <div class="form-group">
@@ -52,7 +49,8 @@
         name="copy"
         rows="6"
         required
-        class="form-control @error('copy') is-invalid @enderror"
+        data-markdown-field
+        class="@error('copy') is-invalid @enderror"
     >{{ old('copy', $notice->copy ?? '') }}</textarea>
     @error('copy')<span class="form-error">{{ $message }}</span>@enderror
 </div>

@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Notice extends Model
 {
-    protected $fillable = ['date', 'heading', 'copy', 'tag', 'ordinamento'];
+    protected $fillable = ['date', 'heading', 'subheading', 'copy', 'ordinamento'];
 }

@@ -29,8 +29,8 @@ class NoticeController extends Controller
         $data = $request->validate([
             'date'        => ['required', 'string', 'max:255'],
             'heading'     => ['required', 'string', 'max:255'],
+            'subheading'  => ['nullable', 'string', 'max:255'],
             'copy'        => ['required', 'string'],
-            'tag'         => ['nullable', 'string', 'max:100'],
             'ordinamento' => ['integer', 'min:0'],
         ]);
 
@@ -50,8 +50,8 @@ class NoticeController extends Controller
         $data = $request->validate([
             'date'        => ['required', 'string', 'max:255'],
             'heading'     => ['required', 'string', 'max:255'],
+            'subheading'  => ['nullable', 'string', 'max:255'],
             'copy'        => ['required', 'string'],
-            'tag'         => ['nullable', 'string', 'max:100'],
             'ordinamento' => ['integer', 'min:0'],
         ]);
 
@@ -59,6 +59,16 @@ class NoticeController extends Controller
 
         return redirect()->route('admin.notices.index')
             ->with('success', 'Avviso aggiornato.');
+    }
+
+    public function duplicate(Notice $notice): RedirectResponse
+    {
+        $clone = $notice->replicate();
+        $clone->heading = 'Copia di ' . $notice->heading;
+        $clone->save();
+
+        return redirect()->route('admin.notices.edit', $clone)
+            ->with('success', 'Avviso duplicato.');
     }
 
     public function destroy(Notice $notice): RedirectResponse
