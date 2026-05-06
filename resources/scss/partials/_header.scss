@@ -5,6 +5,10 @@
 	--header-height-desktop: 9.6rem;
 }
 
+body.menu-open {
+	overflow: hidden;
+}
+
 .siteheader {
 	position: sticky;
 	top: 0;
@@ -109,31 +113,35 @@
 			.siteheader-toggle-inner {
 				width: 0;
 			}
-			& ~ .siteheader-nav {
-				right: 0;
-			}
 		}
 	}
 
 	&-nav {
         // Base styles mobile
         @include breakpoint(tablet-landscape, max) {
-            display: none;
             position: fixed;
             z-index: 2;
             top: 0;
-            bottom: 0;
-            right: -100%;
+            right: 0;
             width: 100%;
             height: 100%;
             padding: 10rem 2rem 5rem;
             background-color: var(--color-primary);
             color: var(--color-text-inverted);
-            transition: right 0.3s ease;
             overflow-y: auto;
+            will-change: transform;
+            transform: translateX(100%);
+            visibility: hidden;
+            transition:
+                transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                visibility 0s linear 0.35s;
             // Quando il toggle principale è attivo
             .siteheader-toggle[aria-expanded='true'] ~ & {
-                right: 0;
+                transform: translateX(0);
+                visibility: visible;
+                transition:
+                    transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                    visibility 0s linear;
             }
         }
         ul {

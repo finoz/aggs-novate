@@ -36,6 +36,31 @@ document.querySelectorAll<HTMLTextAreaElement>('textarea[data-markdown-field]').
     });
 });
 
+// ─── Mobile menu toggle ───────────────────────────────────────────────────────
+const menuToggle = document.querySelector<HTMLButtonElement>('.siteheader-toggle');
+
+if (menuToggle) {
+    const open = () => {
+        menuToggle.setAttribute('aria-expanded', 'true');
+        document.body.classList.add('menu-open');
+    };
+    const close = () => {
+        menuToggle.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('menu-open');
+    };
+
+    menuToggle.addEventListener('click', () => {
+        menuToggle.getAttribute('aria-expanded') === 'true' ? close() : open();
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && menuToggle.getAttribute('aria-expanded') === 'true') {
+            close();
+            menuToggle.focus();
+        }
+    });
+}
+
 // ─── Conferma prima di eliminare (form con method DELETE) ─────────────────────
 document.querySelectorAll<HTMLFormElement>('form[data-confirm]').forEach((form) => {
     form.addEventListener('submit', (e) => {

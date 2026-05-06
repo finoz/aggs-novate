@@ -1,6 +1,6 @@
 <header class="siteheader">
     <div class="siteheader-inner">
-        <button class="siteheader-toggle" aria-controls="siteheader-nav" aria-label="Toggle main navigation">
+        <button class="siteheader-toggle" aria-controls="siteheader-nav" aria-expanded="false" aria-label="Apri/chiudi menu di navigazione">
             <span class="siteheader-toggle-inner"></span>
         </button>
         @if(request()->routeIs('home'))
