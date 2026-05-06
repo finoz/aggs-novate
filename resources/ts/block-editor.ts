@@ -65,8 +65,8 @@ interface ColumnsBlock extends BaseBlock {
 
 interface GroupBlock extends BaseBlock {
     type: 'group';
-    style: 'default' | 'card' | 'accent' | 'dark';
-    layout: 'stack' | 'grid-2' | 'grid-3' | 'side';
+    style: 'default' | 'accent' | 'dark';
+    layout: 'stack' | 'calendar-block';
     blocks: NestedBlock[];
 }
 
@@ -349,12 +349,12 @@ function renderBlockBody(block: Block, nested: boolean): string {
             return `
                 <div class="block-fields-row">
                     <select class="block-input block-field-style">
-                        ${(['default','card','accent','dark'] as const).map(v =>
+                        ${(['default','accent','dark'] as const).map(v =>
                             `<option value="${v}"${block.style === v ? ' selected' : ''}>${v}</option>`
                         ).join('')}
                     </select>
                     <select class="block-input block-field-layout">
-                        ${(['stack','grid-2','grid-3','side'] as const).map(v =>
+                        ${(['stack','calendar-block'] as const).map(v =>
                             `<option value="${v}"${block.layout === v ? ' selected' : ''}>${v}</option>`
                         ).join('')}
                     </select>
@@ -657,11 +657,18 @@ function destroyEditorInCard(card: HTMLElement): void {
 
 function initSortable(list: HTMLElement, nested = false): void {
     Sortable.create(list, {
-        animation:       150,
-        handle:          '.block-card__drag',
-        group:           nested ? 'nested' : 'main',
-        ghostClass:      'block-card--ghost',
-        dragClass:       'block-card--dragging',
+        animation:   150,
+        handle:      '.block-card__drag',
+        group: {
+            name: 'blocks',
+            put(_to: Sortable, _from: Sortable, dragEl: HTMLElement): boolean {
+                if (!nested) return true;
+                const type = dragEl.dataset.type as BlockType;
+                return type !== 'group' && type !== 'columns' && type !== 'notice_list';
+            },
+        },
+        ghostClass:  'block-card--ghost',
+        dragClass:   'block-card--dragging',
     });
 }
 

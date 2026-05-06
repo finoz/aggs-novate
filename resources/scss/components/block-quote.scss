@@ -1,0 +1,23 @@
+.block--quote {}
+
+.quote__body {
+    border-left: 4px solid var(--color-secondary);
+    padding-left: var(--space-m);
+    font-style: italic;
+    font-size: var(--font-size-l);
+    line-height: var(--font-lineheight-loose);
+    margin: 0;
+}
+
+.quote__footer {
+    margin-top: var(--space-s);
+    padding-left: var(--space-m);
+    font-size: var(--font-size-s);
+    opacity: 0.7;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.quote__author { font-style: normal; font-weight: 600; }
+
+.quote__source::before { content: '— '; }

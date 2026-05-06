@@ -63,7 +63,7 @@ class PageController extends Controller
 
         $page->update($data);
 
-        return redirect()->route('admin.pages.index')
+        return redirect()->route('admin.pages.edit', $page)
             ->with('success', 'Pagina aggiornata.');
     }
 

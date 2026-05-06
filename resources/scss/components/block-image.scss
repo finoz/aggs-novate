@@ -1,0 +1,14 @@
+.block--image {
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        border-radius: var(--radius-s);
+    }
+    figcaption {
+        margin-top: 0.5rem;
+        font-size: var(--font-size-xs);
+        opacity: 0.6;
+        font-style: italic;
+    }
+}

@@ -1,0 +1,11 @@
+.block--callout {
+    padding: var(--space-m);
+    border-radius: var(--radius-s);
+    border-left: 4px solid;
+    p:last-child { margin-bottom: 0; }
+
+    &-info    { background: #e3f2fd; border-color: #1976d2; color: #0d47a1; }
+    &-warning { background: #fff8e1; border-color: #f57c00; color: #e65100; }
+    &-success { background: #e8f5e9; border-color: #388e3c; color: #1b5e20; }
+    &-danger  { background: #ffebee; border-color: #c62828; color: #b71c1c; }
+}

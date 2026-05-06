@@ -9,7 +9,7 @@
     // preferred = min + (max - min) * (100vw - 360px) / (1440 - 360)
     --font-size-xs:  1.2rem;
     --font-size-s:   1.4rem;
-    --font-size-m:   clamp(1.6rem, 1.53rem + 0.19vw, 1.8rem);
+    --font-size-m:   1.6rem;
     --font-size-l:   clamp(2.0rem, 1.67rem + 0.93vw, 3.0rem);
     --font-size-xl:  clamp(2.5rem, 1.73rem + 2.13vw, 4.8rem);
     --font-size-xxl: clamp(3.2rem, 1.77rem + 3.98vw, 8rem);
@@ -17,6 +17,12 @@
     --font-lineheight-tight: 1;
     --font-lineheight-normal: 1.5;
     --font-lineheight-loose: 1.8; 
+}
+
+@include breakpoint('tablet-portrait') {
+    :root {
+        --font-size-m:   1.8rem;
+    }
 }
 
 h1,

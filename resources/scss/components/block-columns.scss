@@ -1,0 +1,17 @@
+@use '../helpers' as *;
+
+.block--columns {
+    display: flex;
+    gap: var(--space-m);
+    align-items: flex-start;
+
+    @include breakpoint('tablet-portrait', max) {
+        flex-direction: column;
+    }
+}
+
+.block-column {
+    flex: 1;
+    min-width: 0;
+    > .block:last-child { margin-bottom: 0; }
+}

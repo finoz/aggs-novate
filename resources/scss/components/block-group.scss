@@ -1,0 +1,26 @@
+.block--group {
+    > .block:last-child { margin-bottom: 0; }
+
+    &-card {
+        background: var(--color-bg-default);
+        border-radius: var(--radius-m);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        padding: var(--space-m);
+    }
+    &-accent {
+        background: var(--color-bg-secondary);
+        border-radius: var(--radius-m);
+        padding: var(--space-m);
+    }
+    &-dark {
+        background: var(--color-bg-inverted);
+        color: var(--color-text-inverted);
+        border-radius: var(--radius-m);
+        padding: var(--space-m);
+    }
+
+    &-stack {
+        display: flex;
+        flex-direction: column;
+    }
+}

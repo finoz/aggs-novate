@@ -1,0 +1,8 @@
+.block {
+    &:last-child { margin-bottom: 0; }
+}
+
+.page-empty {
+    opacity: 0.5;
+    font-style: italic;
+}

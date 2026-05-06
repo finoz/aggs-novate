@@ -1,0 +1,13 @@
+.block--text {
+    p  { margin-bottom: 0.75rem; &:last-child { margin-bottom: 0; } }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.75rem; }
+    li { margin-bottom: 0.25rem; }
+    a  { color: var(--color-primary); text-decoration: underline; }
+    blockquote {
+        border-left: 3px solid currentColor;
+        padding-left: 1rem;
+        opacity: 0.7;
+        font-style: italic;
+        margin: 1rem 0;
+    }
+}

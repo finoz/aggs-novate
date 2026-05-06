@@ -1,3 +1,19 @@
+$_arrow-svg: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M7.69431 48V38.8465H38.561L37.6664 44.5619L0 6.92093L6.8891 0L44.6002 37.6409L38.9189 38.4446V7.7693H48V48H7.69431Z'/%3E%3C/svg%3E";
+
+@mixin arrow-icon($size: 4.8rem, $rotate: 0deg) {
+	display: block;
+	width: $size;
+	height: $size;
+	background-color: currentColor;
+	mask-image: url($_arrow-svg);
+	-webkit-mask-image: url($_arrow-svg);
+	mask-repeat: no-repeat;
+	mask-size: contain;
+	@if $rotate != 0deg {
+		transform: rotate($rotate);
+	}
+}
+
 @mixin masked-icon($icon, $size: 1.6rem, $color: currentColor) {
 	width: $size;
 	height: $size;

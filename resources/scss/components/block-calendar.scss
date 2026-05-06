@@ -1,0 +1,63 @@
+@use '../helpers' as *;
+
+.page-content .block--group-calendar-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-m);
+    h2 {
+        font-family: var(--font-family-helper);
+        @extend %font-primary-xs-uppercase;
+        color: var(--color-secondary);
+        border-top: 1px solid var(--color-bg-secondary);
+        padding-top: var(--space-s);
+    }
+}
+
+.block--calendar-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-s);
+    align-items: baseline;
+    padding-bottom: var(--space-s);
+    @include breakpoint('tablet-portrait') {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+    & + & {
+        padding-top: var(--space-s);
+        border-top: 1px solid var(--color-bg-secondary);
+    }
+}
+
+.calendar-item {
+    &__date,
+    &__detail {
+        font-size: var(--font-size-xs);
+        color: var(--color-text-dull);
+    }
+    &__date {
+        @include breakpoint('tablet-portrait') {
+            width: 12rem;
+        }
+    }
+    &__text {
+        font-size: var(--font-size-m);
+        font-weight: bold;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.4rem;
+        &:is(a) {
+            text-decoration: none;
+            &::after {
+                content: '';
+                display: inline-block;
+                margin-left: 0.4rem;
+                @include arrow-icon(1.2rem, -90deg);
+            }
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
