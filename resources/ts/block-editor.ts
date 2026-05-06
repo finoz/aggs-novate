@@ -190,12 +190,17 @@ function renderBlock(block: Block, nested = false): HTMLElement {
         <div class="block-card__header">
             <span class="block-card__drag" title="Trascina per spostare">⠿</span>
             <span class="block-card__label">${blockLabel(block.type)}</span>
+            <button type="button" class="block-card__duplicate" title="Duplica blocco">⧉</button>
             <button type="button" class="block-card__delete" title="Elimina blocco">×</button>
         </div>
         <div class="block-card__body">
             ${renderBlockBody(block, nested)}
         </div>
     `;
+
+    card.querySelector<HTMLButtonElement>('.block-card__duplicate')!.addEventListener('click', () => {
+        duplicateBlock(card, nested);
+    });
 
     card.querySelector<HTMLButtonElement>('.block-card__delete')!.addEventListener('click', () => {
         destroyEditorInCard(card);
@@ -622,6 +627,31 @@ function serializeCard(card: HTMLElement, nested: boolean): Block {
             return { id, type, class: cls, htmlId: hid, columns };
         }
     }
+}
+
+// ─── Duplicate ────────────────────────────────────────────────────────────────
+
+function duplicateBlock(card: HTMLElement, nested: boolean): void {
+    const serialized = serializeCard(card, nested);
+    const cloned = deepCloneBlockWithNewIds(serialized);
+    const newCard = renderBlock(cloned, nested);
+    card.after(newCard);
+    newCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function deepCloneBlockWithNewIds(block: Block): Block {
+    const cloned = JSON.parse(JSON.stringify(block)) as any;
+    cloned.id = crypto.randomUUID();
+    if (cloned.type === 'columns') {
+        cloned.columns = cloned.columns.map((col: ColumnData) => ({
+            ...col,
+            id: crypto.randomUUID(),
+            blocks: col.blocks.map((b: NestedBlock) => ({ ...b, id: crypto.randomUUID() })),
+        }));
+    } else if (cloned.type === 'group') {
+        cloned.blocks = cloned.blocks.map((b: NestedBlock) => ({ ...b, id: crypto.randomUUID() }));
+    }
+    return cloned as Block;
 }
 
 // ─── Cleanup helpers ──────────────────────────────────────────────────────────

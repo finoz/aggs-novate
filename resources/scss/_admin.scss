@@ -554,6 +554,20 @@ textarea.form-control { resize: vertical; min-height: 160px; }
         color: $a-text-muted;
     }
 
+    &__duplicate {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.15rem;
+        line-height: 1;
+        padding: 0.15rem 0.4rem;
+        color: $a-text-muted;
+        border-radius: 4px;
+        transition: color 0.15s, background 0.15s;
+
+        &:hover { color: #1565c0; background: #e3f2fd; }
+    }
+
     &__delete {
         background: none;
         border: none;
