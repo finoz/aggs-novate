@@ -1,4 +1,39 @@
 @use "sass:map";
+@use "sass:math";
+
+// Root font-size in px — must match --font-size-root in _typography.scss
+$bp-root-px: 10;
+
+$bp-list: (
+  mobile-sm:            360px,
+  mobile:               0px,
+  tablet-portrait:      768px,
+  tablet-landscape:     1024px,
+  tablet-landscape-lg:  1144px,
+  desktop:              1366px,
+  max-width:            1440px,
+);
+
+// fluid(min, max [, from, to])
+// Scales linearly from $min-size at viewport $from to $max-size at viewport $to.
+// Sizes in rem. $from/$to are keys from $bp-list.
+// Example: fluid(2rem, 4rem) → scales 360px→1440px
+//          fluid(2rem, 4rem, 'tablet-portrait', 'desktop') → scales 768px→1366px
+@function fluid($min-size, $max-size, $from: mobile-sm, $to: max-width) {
+    $min-vw: map.get($bp-list, $from);
+    $max-vw: map.get($bp-list, $to);
+
+    $min-px:  math.div($min-size, 1rem) * $bp-root-px;
+    $max-px:  math.div($max-size, 1rem) * $bp-root-px;
+    $vw-min:  math.div($min-vw, 1px);
+    $vw-max:  math.div($max-vw, 1px);
+
+    $slope:     math.div($max-px - $min-px, $vw-max - $vw-min);
+    $slope-vw:  $slope * 100;
+    $intercept: math.div($min-px - $slope * $vw-min, $bp-root-px) * 1rem;
+
+    @return clamp(#{$min-size}, #{$intercept} + #{$slope-vw}vw, #{$max-size});
+}
 
 @mixin breakpoint($bp, $type: min) {
   $width: map.get($bp-list, $bp);
@@ -19,28 +54,18 @@
   --bp-tablet-landscape: 1024px;
   --bp-tablet-landscape-lg: 1144px;
   --bp-desktop: 1366px;
-  --max-width: 144rem; // 144rem
-  --max-reading: 72rem; // 72rem
+  --max-width: 144rem;
+  --max-reading: 72rem;
   //
-	--space-main: clamp(2rem, 2vw, 4rem);
-	--space-s: clamp(1rem, 1vw, 2rem);
-	--space-m: clamp(1.5rem, 1.5vw, 3rem);
-	--space-l: clamp(2rem, 2vw, 4rem);
-	--space-xl: clamp(3rem, 3vw, 6rem);
+  --space-main: #{fluid(2rem, 4rem)};
+  --space-s:    #{fluid(1rem, 2rem)};
+  --space-m:    #{fluid(1.5rem, 3rem)};
+  --space-l:    #{fluid(2rem, 4rem)};
+  --space-xl:   #{fluid(3rem, 6rem)};
   //
-  --radius-s: clamp(0.4rem, 0.4vw, 0.8rem);
-  --radius-m: clamp(0.8rem, 0.8vw, 1.6rem);
+  --radius-s: #{fluid(0.4rem, 0.8rem)};
+  --radius-m: #{fluid(0.8rem, 1.6rem)};
 }
-
-/* useful for loops on media breakpoints */
-$bp-list: (
-  mobile: 0,
-  tablet-portrait: 768px,
-  tablet-landscape: 1024px,
-  tablet-landscape-lg: 1144px,
-  desktop: 1366px,
-  max-width: 1440px
-);
 
 %main-container {
   width: 100%;
@@ -49,4 +74,3 @@ $bp-list: (
   margin-right: auto;
   padding-inline: var(--space-main);
 }
-
