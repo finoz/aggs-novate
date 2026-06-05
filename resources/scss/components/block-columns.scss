@@ -2,8 +2,25 @@
 
 .block--columns {
     display: flex;
-    gap: var(--space-m);
+    gap: 1.5rem;
     align-items: flex-start;
+    @include breakpoint(tablet-landscape) {
+        gap: 3rem;
+    }
+
+    &.block--columns-gap-small{ 
+        gap: 0.75rem;
+    }
+
+    &.block--columns-gap-large{ 
+        gap: 3rem;
+        @include breakpoint(tablet-landscape) {
+            gap: 6rem;
+        }
+    }
+    &.block--columns-gap-none{ 
+        gap: 0;
+    }
 
     @include breakpoint('tablet-portrait', max) {
         flex-direction: column;
@@ -11,7 +28,11 @@
 }
 
 .block-column {
-    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    flex-shrink: 1;
     min-width: 0;
-    > .block:last-child { margin-bottom: 0; }
 }

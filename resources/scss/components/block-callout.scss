@@ -1,5 +1,10 @@
+@use '../helpers' as *;
+
 .block--callout {
-    padding: var(--space-m);
+    padding: 1.5rem;
+    @include breakpoint(tablet-landscape) {
+        padding: 3rem;
+    }
     border-radius: var(--radius-s);
     border-left: 4px solid;
     p:last-child { margin-bottom: 0; }

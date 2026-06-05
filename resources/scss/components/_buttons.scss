@@ -1,1 +1,24 @@
 @use '../helpers' as *;
+
+.btn {
+
+}
+.btn--primary {
+	@extend %cta-main;
+	background-color: var(--color-primary);
+	color: var(--color-on-primary);
+	&:hover {
+		background-color: var(--color-primary-hover);
+	}
+}
+.btn--secondary {
+	@extend %cta-main;
+	background-color: var(--color-secondary);
+	color: var(--color-on-secondary);
+	&:hover {
+		background-color: var(--color-secondary-hover);
+	}
+}
+.btn--loud {
+	@extend %cta-loud;
+}

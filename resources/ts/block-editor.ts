@@ -15,8 +15,6 @@ import Sortable from 'sortablejs';
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
-import EasyMDE from 'easymde';
-import 'easymde/dist/easymde.min.css';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -60,13 +58,16 @@ interface ColumnData {
 
 interface ColumnsBlock extends BaseBlock {
     type: 'columns';
+    style: 'default' | 'accent' | 'dark';
+    layout: 'default' |'wide';
+    gap?: 'default' | 'small' | 'large' | 'none';
     columns: ColumnData[];
 }
 
 interface GroupBlock extends BaseBlock {
     type: 'group';
     style: 'default' | 'accent' | 'dark';
-    layout: 'stack' | 'calendar-block';
+    layout: 'default' |'wide' | 'calendar-block';
     blocks: NestedBlock[];
 }
 
@@ -75,14 +76,13 @@ interface ButtonBlock extends BaseBlock {
     label: string;
     href: string;
     target: '_self' | '_blank';
-    variant: 'primary' | 'secondary' | 'outline';
+    variant: 'primary' | 'secondary' | 'outline' | 'loud';
 }
 
 interface QuoteBlock extends BaseBlock {
     type: 'quote';
     content: string;
     author?: string;
-    source?: string;
 }
 
 interface CalendarItemBlock extends BaseBlock {
@@ -106,8 +106,6 @@ type Block = NestedBlock | ColumnsBlock | GroupBlock | NoticeListBlock;
 /** TipTap instances: callout blocks only */
 const tiptapInstances = new Map<string, Editor>();
 
-/** EasyMDE instances: text blocks */
-const easymdeInstances = new Map<string, EasyMDE>();
 
 let uploadUrl  = '/admin/upload';
 let csrfToken  = '';
@@ -164,7 +162,7 @@ function makeDefaultBlock(type: BlockType): Block {
         case 'image':    return { id, type, src: '', alt: '', caption: '', class: '', htmlId: '' };
         case 'callout':  return { id, type, variant: 'info', content: null, class: '', htmlId: '' };
         case 'columns':  return {
-            id, type,
+            id, type, style: 'default', layout: 'default', gap: 'default',
             columns: [
                 { id: crypto.randomUUID(), blocks: [] },
                 { id: crypto.randomUUID(), blocks: [] },
@@ -173,7 +171,7 @@ function makeDefaultBlock(type: BlockType): Block {
         };
         case 'group':        return { id, type, style: 'default', layout: 'stack', blocks: [], class: '', htmlId: '' };
         case 'button':       return { id, type, label: '', href: '', target: '_self', variant: 'primary', class: '', htmlId: '' };
-        case 'quote':        return { id, type, content: '', author: '', source: '', class: '', htmlId: '' };
+        case 'quote':        return { id, type, content: '', author: '', class: '', htmlId: '' };
         case 'calendar_item': return { id, type, date: '', text: '', link: '', detail: '', class: '', htmlId: '' };
         case 'notice_list':  return { id, type, title: '', class: '', htmlId: '' };
     }
@@ -258,7 +256,7 @@ function renderBlockBody(block: Block, nested: boolean): string {
 
         case 'text':
             return `
-                <textarea class="block-markdown" data-markdown></textarea>
+                <textarea class="block-markdown" data-markdown>${escHtml(block.content ?? '')}</textarea>
                 ${advancedFields}`;
 
         case 'image':
@@ -304,7 +302,7 @@ function renderBlockBody(block: Block, nested: boolean): string {
                         <option value="_blank"${block.target === '_blank' ? ' selected' : ''}>Nuova finestra</option>
                     </select>
                     <select class="block-input block-field-variant">
-                        ${(['primary','secondary','outline'] as const).map(v =>
+                        ${(['primary','secondary','outline', 'loud'] as const).map(v =>
                             `<option value="${v}"${block.variant === v ? ' selected' : ''}>${v}</option>`
                         ).join('')}
                     </select>
@@ -316,7 +314,6 @@ function renderBlockBody(block: Block, nested: boolean): string {
                 <textarea class="block-input block-field-content" rows="4" placeholder="Testo della citazione…">${escHtml(block.content)}</textarea>
                 <div class="block-fields-row">
                     <input type="text" class="block-input block-field-author" placeholder="Autore (facoltativo)" value="${escHtml(block.author ?? '')}">
-                    <input type="text" class="block-input block-field-source" placeholder="Fonte / opera (facoltativa)" value="${escHtml(block.source ?? '')}">
                 </div>
                 ${advancedFields}`;
 
@@ -356,19 +353,37 @@ function renderBlockBody(block: Block, nested: boolean): string {
 
         case 'group': {
             const groupBlocksHtml = block.blocks.map(sub => renderBlock(sub, true).outerHTML).join('');
+            const groupAdvancedFields = `
+                <details class="block-advanced">
+                    <summary>Avanzato</summary>
+                    <div class="block-advanced__fields">
+                        <div class="block-field">
+                            <label>Stile</label>
+                            <select class="block-input block-field-style">
+                                ${(['default','accent','dark'] as const).map(v =>
+                                    `<option value="${v}"${block.style === v ? ' selected' : ''}>${v}</option>`
+                                ).join('')}
+                            </select>
+                        </div>
+                        <div class="block-field">
+                            <label>Layout</label>
+                            <select class="block-input block-field-layout">
+                                ${(['default','wide','calendar-block'] as const).map(v =>
+                                    `<option value="${v}"${block.layout === v ? ' selected' : ''}>${v}</option>`
+                                ).join('')}
+                            </select>
+                        </div>
+                        <div class="block-field">
+                            <label>CSS class</label>
+                            <input type="text" class="block-input block-field-class" placeholder="mia-classe" value="${escHtml(block.class ?? '')}">
+                        </div>
+                        <div class="block-field">
+                            <label>ID HTML</label>
+                            <input type="text" class="block-input block-field-htmlid" placeholder="sezione-intro" value="${escHtml(block.htmlId ?? '')}">
+                        </div>
+                    </div>
+                </details>`;
             return `
-                <div class="block-fields-row">
-                    <select class="block-input block-field-style">
-                        ${(['default','accent','dark'] as const).map(v =>
-                            `<option value="${v}"${block.style === v ? ' selected' : ''}>${v}</option>`
-                        ).join('')}
-                    </select>
-                    <select class="block-input block-field-layout">
-                        ${(['stack','calendar-block'] as const).map(v =>
-                            `<option value="${v}"${block.layout === v ? ' selected' : ''}>${v}</option>`
-                        ).join('')}
-                    </select>
-                </div>
                 <div class="block-group-add-buttons">
                     <button type="button" class="block-add-btn block-add-btn--sm" data-add-nested="heading">+Titolo</button>
                     <button type="button" class="block-add-btn block-add-btn--sm" data-add-nested="text">+Testo</button>
@@ -381,7 +396,7 @@ function renderBlockBody(block: Block, nested: boolean): string {
                 <div class="block-list block-list--nested" data-nested-list>
                     ${groupBlocksHtml}
                 </div>
-                ${advancedFields}`;
+                ${groupAdvancedFields}`;
         }
 
         case 'columns': {
@@ -394,19 +409,60 @@ function renderBlockBody(block: Block, nested: boolean): string {
                             <button type="button" class="block-add-btn block-add-btn--sm" data-add-nested="text">+T</button>
                             <button type="button" class="block-add-btn block-add-btn--sm" data-add-nested="image">+I</button>
                             <button type="button" class="block-add-btn block-add-btn--sm" data-add-nested="callout">+C</button>
+                            <button type="button" class="block-add-btn block-add-btn--sm" data-add-nested="button">+B</button>
                         </div>` : ''}
                     </div>
                     <div class="block-list block-list--nested" data-nested-list>
                         ${col.blocks.map(sub => renderBlock(sub, true).outerHTML).join('')}
                     </div>
                 </div>`).join('');
+            const columnsAdvancedFields = `
+                <details class="block-advanced">
+                    <summary>Avanzato</summary>
+                    <div class="block-advanced__fields">
+                        <div class="block-field">
+                            <label>Stile</label>
+                            <select class="block-input block-field-style">
+                                ${(['default','accent','dark'] as const).map(v =>
+                                    `<option value="${v}"${block.style === v ? ' selected' : ''}>${v}</option>`
+                                ).join('')}
+                            </select>
+                        </div>
+                        <div class="block-field">
+                            <label>Layout</label>
+                            <select class="block-input block-field-layout">
+                                ${(['default','wide'] as const).map(v =>
+                                    `<option value="${v}"${block.layout === v ? ' selected' : ''}>${v}</option>`
+                                ).join('')}
+                            </select>
+                        </div>
+                        <div class="block-field">
+                            <label>Gap</label>
+                            <select class="block-input block-field-gap">
+                                ${(['default' ,'small', 'large', 'none'] as const).map(v =>
+                                    `<option value="${v}"${block.gap === v ? ' selected' : ''}>${v}</option>`
+                                ).join('')}
+                            </select>
+                        </div>
+                        <div class="block-field">
+                        </div>
+                        <div class="block-field">
+                            <label>CSS class</label>
+                            <input type="text" class="block-input block-field-class" placeholder="mia-classe" value="${escHtml(block.class ?? '')}">
+                        </div>
+                        <div class="block-field">
+                            <label>ID HTML</label>
+                            <input type="text" class="block-input block-field-htmlid" placeholder="sezione-intro" value="${escHtml(block.htmlId ?? '')}">
+                        </div>
+                    </div>
+                </details>`;
             return `
                 <div class="block-columns-editor">${colsHtml}</div>
                 <div class="block-column-actions">
                     <button type="button" class="block-add-btn block-add-btn--sm" data-add-column>+ Colonna</button>
                     <button type="button" class="block-add-btn block-add-btn--sm block-add-btn--danger" data-remove-column>− Colonna</button>
                 </div>
-                ${advancedFields}`;
+                ${columnsAdvancedFields}`;
         }
     }
 }
@@ -414,13 +470,6 @@ function renderBlockBody(block: Block, nested: boolean): string {
 // ─── Post-insert hooks ────────────────────────────────────────────────────────
 
 function afterInsert(card: HTMLElement, block: Block, nested: boolean): void {
-    if (block.type === 'text') {
-        const ta = card.querySelector<HTMLTextAreaElement>('[data-markdown]')!;
-        const raw = (block as TextBlock).content;
-        const initialValue = typeof raw === 'string' ? raw : '';
-        easymdeInstances.set(block.id, spawnEasyMDE(ta, initialValue));
-    }
-
     if (block.type === 'callout') {
         const el = card.querySelector<HTMLElement>('[data-tiptap]')!;
         tiptapInstances.set(block.id, spawnTipTap(el, (block as CalloutBlock).content));
@@ -502,6 +551,7 @@ function wireColumnsBlock(card: HTMLElement, block: ColumnsBlock): void {
                     <button type="button" class="block-add-btn block-add-btn--sm" data-add-nested="text">+T</button>
                     <button type="button" class="block-add-btn block-add-btn--sm" data-add-nested="image">+I</button>
                     <button type="button" class="block-add-btn block-add-btn--sm" data-add-nested="callout">+C</button>
+                    <button type="button" class="block-add-btn block-add-btn--sm" data-add-nested="button">+B</button>
                 </div>
             </div>
             <div class="block-list block-list--nested" data-nested-list></div>`;
@@ -556,8 +606,9 @@ function serializeBlockList(list: HTMLElement, nested: boolean): Block[] {
 function serializeCard(card: HTMLElement, nested: boolean): Block {
     const id   = card.dataset.id!;
     const type = card.dataset.type as BlockType;
-    const cls  = card.querySelector<HTMLInputElement>('.block-field-class')?.value ?? '';
-    const hid  = card.querySelector<HTMLInputElement>('.block-field-htmlid')?.value ?? '';
+    const ownAdv = card.querySelector<HTMLElement>(':scope > .block-card__body > .block-advanced');
+    const cls  = ownAdv?.querySelector<HTMLInputElement>('.block-field-class')?.value ?? '';
+    const hid  = ownAdv?.querySelector<HTMLInputElement>('.block-field-htmlid')?.value ?? '';
 
     switch (type) {
         case 'heading': return {
@@ -568,7 +619,7 @@ function serializeCard(card: HTMLElement, nested: boolean): Block {
 
         case 'text': return {
             id, type, class: cls, htmlId: hid,
-            content: easymdeInstances.get(id)?.value() ?? null,
+            content: card.querySelector<HTMLTextAreaElement>('[data-markdown]')?.value ?? null,
         };
 
         case 'image': return {
@@ -596,7 +647,6 @@ function serializeCard(card: HTMLElement, nested: boolean): Block {
             id, type, class: cls, htmlId: hid,
             content: card.querySelector<HTMLTextAreaElement>('.block-field-content')?.value ?? '',
             author:  card.querySelector<HTMLInputElement>('.block-field-author')?.value ?? '',
-            source:  card.querySelector<HTMLInputElement>('.block-field-source')?.value ?? '',
         };
 
         case 'calendar_item': return {
@@ -632,7 +682,12 @@ function serializeCard(card: HTMLElement, nested: boolean): Block {
                     blocks: serializeBlockList(nestedList, true) as NestedBlock[],
                 });
             });
-            return { id, type, class: cls, htmlId: hid, columns };
+            return {
+                id, type, class: cls, htmlId: hid, columns,
+                style:  (card.querySelector<HTMLSelectElement>('.block-field-style')?.value ?? 'default') as ColumnsBlock['style'],
+                layout: (card.querySelector<HTMLSelectElement>('.block-field-layout')?.value ?? 'default') as ColumnsBlock['layout'],
+                gap:    (card.querySelector<HTMLSelectElement>('.block-field-gap')?.value ?? 'default') as ColumnsBlock['gap'],
+            };
         }
     }
 }
@@ -671,10 +726,6 @@ function destroyEditorInCard(card: HTMLElement): void {
             tiptapInstances.get(id)!.destroy();
             tiptapInstances.delete(id);
         }
-        if (easymdeInstances.has(id)) {
-            easymdeInstances.get(id)!.toTextArea();
-            easymdeInstances.delete(id);
-        }
     }
     card.querySelectorAll<HTMLElement>('.block-card').forEach(nested => {
         const nid = nested.dataset.id;
@@ -682,10 +733,6 @@ function destroyEditorInCard(card: HTMLElement): void {
             if (tiptapInstances.has(nid)) {
                 tiptapInstances.get(nid)!.destroy();
                 tiptapInstances.delete(nid);
-            }
-            if (easymdeInstances.has(nid)) {
-                easymdeInstances.get(nid)!.toTextArea();
-                easymdeInstances.delete(nid);
             }
         }
     });
@@ -720,18 +767,6 @@ function spawnTipTap(el: HTMLElement, content: object | null): Editor {
             Link.configure({ openOnClick: false }),
         ],
         content: content ?? undefined,
-    });
-}
-
-// ─── EasyMDE (text blocks) ────────────────────────────────────────────────────
-
-function spawnEasyMDE(el: HTMLTextAreaElement, content: string): EasyMDE {
-    return new EasyMDE({
-        element: el,
-        initialValue: content,
-        spellChecker: false,
-        toolbar: ['bold', 'italic', 'heading', '|', 'unordered-list', 'ordered-list', '|', 'link', '|', 'preview'],
-        status: false,
     });
 }
 

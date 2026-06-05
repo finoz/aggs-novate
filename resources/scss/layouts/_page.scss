@@ -7,18 +7,19 @@
 .page-body {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-m);
+	gap: 1.5rem;
 	@include breakpoint('tablet-landscape') {
+		gap: 3rem;
 		display: grid;
 		grid-template-columns: repeat(12, 1fr);
-		row-gap: var(--space-l);
+		row-gap: 6rem;
 		* {
 			grid-column: 5 / -1;
 		}
 		h1,
 		.block.hero {
 			grid-column: 1 / -1;
-			padding-block: var(--space-l);
+			padding-block: 4rem;
 		}
 	}
 }

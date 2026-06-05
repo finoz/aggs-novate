@@ -47,6 +47,7 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/scss/app.scss',
+                'resources/scss/admin-bundle.scss',
                 'resources/ts/app.ts',
             ],
             refresh: true,

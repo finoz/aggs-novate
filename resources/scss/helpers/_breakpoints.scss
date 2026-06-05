@@ -57,12 +57,6 @@ $bp-list: (
   --max-width: 144rem;
   --max-reading: 72rem;
   //
-  --space-main: #{fluid(2rem, 4rem)};
-  --space-s:    #{fluid(1rem, 2rem)};
-  --space-m:    #{fluid(1.5rem, 3rem)};
-  --space-l:    #{fluid(2rem, 4rem)};
-  --space-xl:   #{fluid(3rem, 6rem)};
-  //
   --radius-s: #{fluid(0.4rem, 0.8rem)};
   --radius-m: #{fluid(0.8rem, 1.6rem)};
 }
@@ -72,5 +66,8 @@ $bp-list: (
   max-width: var(--max-width);
   margin-left: auto;
   margin-right: auto;
-  padding-inline: var(--space-main);
+  padding-inline: 2rem;
+  @include breakpoint(tablet-landscape) {
+    padding-inline: 4rem;
+  }
 }

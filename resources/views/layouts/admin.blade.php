@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Admin') — {{ config('app.name') }}</title>
-    @vite(['resources/scss/app.scss', 'resources/ts/app.ts'])
+    @vite(['resources/scss/admin-bundle.scss', 'resources/ts/app.ts'])
 </head>
 <body class="admin-body">
 

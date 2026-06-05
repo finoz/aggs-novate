@@ -7,7 +7,17 @@
     <title>@yield('title', config('app.name')) — {{ config('app.name') }}</title>
     @vite(['resources/scss/app.scss', 'resources/ts/app.ts'])
 </head>
-<body>
+<!-- setup body classes -->
+@php
+    $bodyClass = 'site-body';
+    if (isset($page)) {
+        $bodyClass .= ' page-' . $page->slug;
+        if ($page->is_home) {
+            $bodyClass .= ' page-home';
+        }
+    }
+@endphp
+<body class="{{ $bodyClass }}">
 
 @include('partials.icons-sprite')
 

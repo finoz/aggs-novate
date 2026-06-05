@@ -34,6 +34,17 @@
     }
 }
 
+%cta-loud {
+    @extend %cta-reset;
+    @extend %font-primary-l;
+    font-weight: 400;
+    transition: all 0.3s ease;
+    &:hover {
+		opacity: 0.7;
+        transform: translateX(4px);
+	}
+}
+
 %arrow-addon {
     position: relative;
     gap: 1rem;
@@ -83,8 +94,7 @@
         color: $color-hover;
     }
     // ARROW
-    @extend %arrow-addon;
-    
+    @extend %arrow-addon;   
 }
 
 @mixin cta-outline($color: var(--color-primary), $color-hover: var(--color-secondary)) {
@@ -98,17 +108,3 @@
     // ARROW
     @extend %arrow-addon;
 }
-
-
-
-/* @mixin cta-full($bg-color: var(--color-tertiary), $bg-color-hover: var(--color-secondary), $color: var(--color-primary)) {
-    @extend %cta-main;
-    color: $color;
-    background-color: $bg-color;
-    border: 1px solid $bg-color;
-    &:hover:not(:focus) {
-        text-decoration: none;
-        background-color: $bg-color-hover;
-        border-color: $bg-color-hover;
-    }
-} */

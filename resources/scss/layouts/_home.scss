@@ -1,0 +1,49 @@
+@use '../helpers' as *;
+
+.page-home {
+
+}
+
+#hero {
+
+}
+
+#quicks {
+	.block-column {
+		border: 1px solid var (--color-dull);
+		padding: 1.5rem;
+		min-height: 20rem;
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		gap: 1.5rem;
+		@include breakpoint(tablet-landscape) {
+			padding: 3rem;
+			gap: 3rem;
+		}
+		&:nth-child(1) {
+			color: var(--color-white);
+			background-color: var(--color-primary);
+			.block--button {
+				color: var(--color-secondary);
+			}
+		}
+		&:nth-child(2) {
+			background-color: var(--color-secondary);
+			color: var(--color-primary);
+		}
+		&:nth-child(3) {
+			background-color: var(--color-text);
+			color: var(--color-white);
+			.block--button {
+				color: var(--color-secondary);
+			}
+		}
+		.block--heading {
+		}
+		.block--button {
+			margin-top: auto;
+			margin-left: auto;
+		}
+	}
+}

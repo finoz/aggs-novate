@@ -9,9 +9,6 @@
             @if($block['author'] ?? '')
                 <cite class="quote__author">{{ $block['author'] }}</cite>
             @endif
-            @if($block['source'] ?? '')
-                <span class="quote__source">{{ $block['source'] }}</span>
-            @endif
         </footer>
     @endif
 </div>

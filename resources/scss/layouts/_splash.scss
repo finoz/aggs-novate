@@ -19,8 +19,8 @@ body.page-maintenance {
 		max-width: none;
 		width: 90vw;
 		height: 90dvh;
-		padding: var(--space-main);
-		gap: var(--space-xl);
+		padding: 2rem;
+		gap: 3rem;
 		&::after {
 			content: "";
 			position: relative;
@@ -39,6 +39,7 @@ body.page-maintenance {
 		@include breakpoint(tablet-landscape) {
 			flex-direction: row;
 			padding: 8rem;
+			gap: 6rem;
 			align-items: center;
 			justify-content: space-between;
 		}
@@ -54,7 +55,7 @@ body.page-maintenance {
 		display: flex;
 		flex-direction: column;
 		width: 100%;
-		gap: var(--space-main);
+		gap: 2rem;
 		align-items: flex-start;
 		@extend %font-primary-m;
 		.link-accent {
@@ -73,6 +74,7 @@ body.page-maintenance {
 		}
 		@include breakpoint(tablet-landscape) {
 			width: auto;
+			gap: 4rem;
 		}	
 	}	
 }

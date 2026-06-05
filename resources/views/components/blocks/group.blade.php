@@ -1,6 +1,6 @@
 @php
     $style  = in_array($block['style'] ?? '', ['default', 'accent', 'dark']) ? $block['style'] : 'default';
-    $layout = in_array($block['layout'] ?? '', ['stack', 'calendar-block']) ? $block['layout'] : 'stack';
+    $layout = in_array($block['layout'] ?? '', ['default', 'wide', 'calendar-block']) ? $block['layout'] : 'stack';
     $class  = trim('block block--group block--group-' . $style . ' block--group-' . $layout . ' ' . ($block['class'] ?? ''));
 @endphp
 <div class="{{ $class }}"@if($block['htmlId'] ?? '') id="{{ e($block['htmlId']) }}"@endif>

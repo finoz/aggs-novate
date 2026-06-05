@@ -1,5 +1,17 @@
+@use '../helpers' as *;
+
 .block {
     &:last-child { margin-bottom: 0; }
+}
+
+.block--wide {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    row-gap: 2rem;
+    @include breakpoint(tablet-landscape) {
+        row-gap: 4rem;
+    }
 }
 
 .page-empty {

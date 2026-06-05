@@ -17,7 +17,7 @@
 	}
 	.abstract {
 		position: relative;
-		padding-bottom: var(--space-l);
+		padding-bottom: 2rem;
 		[href*="mailto:"] {
 			font-family: var(--font-family-secondary);
 			font-weight: bold;
@@ -27,6 +27,7 @@
 			}
 		}
 		@include breakpoint('tablet-landscape') {
+			padding-bottom: 4rem;
 			&::before {
 				content: '';
 				position: absolute;
