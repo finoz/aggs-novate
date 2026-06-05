@@ -10,13 +10,12 @@
 
 #quicks {
 	.block-column {
-		border: 1px solid var (--color-dull);
 		padding: 1.5rem;
-		min-height: 20rem;
+		min-height: 24rem;
 		display: flex;
 		flex-direction: column;
 		width: 100%;
-		gap: 1.5rem;
+		gap: 1rem;
 		@include breakpoint(tablet-landscape) {
 			padding: 3rem;
 			gap: 3rem;
