@@ -352,7 +352,7 @@ function renderBlockBody(block: Block, nested: boolean): string {
                 ${advancedFields}`;
 
         case 'group': {
-            const groupBlocksHtml = block.blocks.map(sub => renderBlock(sub, true).outerHTML).join('');
+            const groupBlocksHtml = '';
             const groupAdvancedFields = `
                 <details class="block-advanced">
                     <summary>Avanzato</summary>
@@ -412,9 +412,7 @@ function renderBlockBody(block: Block, nested: boolean): string {
                             <button type="button" class="block-add-btn block-add-btn--sm" data-add-nested="button">+B</button>
                         </div>` : ''}
                     </div>
-                    <div class="block-list block-list--nested" data-nested-list>
-                        ${col.blocks.map(sub => renderBlock(sub, true).outerHTML).join('')}
-                    </div>
+                    <div class="block-list block-list--nested" data-nested-list></div>
                 </div>`).join('');
             const columnsAdvancedFields = `
                 <details class="block-advanced">
@@ -518,8 +516,12 @@ function wireImageUpload(card: HTMLElement): void {
 }
 
 function wireColumnsBlock(card: HTMLElement, block: ColumnsBlock): void {
-    card.querySelectorAll<HTMLElement>('[data-nested-list]').forEach(list => {
-        initSortable(list, true);
+    card.querySelectorAll<HTMLElement>('.block-column-editor').forEach(colEl => {
+        const colId = colEl.dataset.colId;
+        const nestedList = colEl.querySelector<HTMLElement>('[data-nested-list]')!;
+        const colData = block.columns.find(c => c.id === colId);
+        colData?.blocks.forEach(sub => nestedList.appendChild(renderBlock(sub, true)));
+        initSortable(nestedList, true);
     });
 
     card.querySelectorAll<HTMLElement>('.block-column-editor').forEach(colEl => {
@@ -582,8 +584,9 @@ function wireColumnsBlock(card: HTMLElement, block: ColumnsBlock): void {
     });
 }
 
-function wireGroupBlock(card: HTMLElement, _block: GroupBlock): void {
+function wireGroupBlock(card: HTMLElement, block: GroupBlock): void {
     const nestedList = card.querySelector<HTMLElement>('[data-nested-list]')!;
+    block.blocks.forEach(sub => nestedList.appendChild(renderBlock(sub, true)));
     initSortable(nestedList, true);
 
     card.querySelectorAll<HTMLButtonElement>('[data-add-nested]').forEach(btn => {

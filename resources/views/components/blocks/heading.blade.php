@@ -3,4 +3,4 @@
     $idAttr = ($block['htmlId'] ?? '') ? ' id="' . e($block['htmlId']) . '"' : '';
     $class  = trim('block block--heading ' . ($block['class'] ?? ''));
 @endphp
-{!! '<h' . $level . $idAttr . ' class="' . e($class) . '">' . e($block['text'] ?? '') . '</h' . $level . '>' !!}
+{!! '<h' . $level . $idAttr . ' class="' . e($class) . '">' . ($block['text'] ?? '') . '</h' . $level . '>' !!}
