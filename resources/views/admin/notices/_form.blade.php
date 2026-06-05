@@ -49,8 +49,7 @@
         name="copy"
         rows="6"
         required
-        data-markdown-field
-        class="@error('copy') is-invalid @enderror"
+        class="form-control @error('copy') is-invalid @enderror"
     >{{ old('copy', $notice->copy ?? '') }}</textarea>
     @error('copy')<span class="form-error">{{ $message }}</span>@enderror
 </div>

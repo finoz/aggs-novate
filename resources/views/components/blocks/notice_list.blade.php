@@ -16,7 +16,7 @@
             <time class="notice-item__date">{{ $notice->date }}</time>
             @endif
             @if($notice->copy)
-                <div class="notice-item__copy">{!! \Illuminate\Support\Str::markdown($notice->copy) !!}</div>
+                <div class="notice-item__copy">{!! \Illuminate\Support\Str::markdownLinks($notice->copy) !!}</div>
             @endif
         </div>
     @empty

@@ -2,7 +2,7 @@
     $raw   = $block['content'] ?? null;
     $html  = '';
     if (is_string($raw) && $raw !== '') {
-        $html = \Illuminate\Support\Str::markdown($raw);
+        $html = \Illuminate\Support\Str::markdownLinks($raw);
     } elseif ($raw) {
         // Legacy TipTap JSON — fallback
         $html = (new \Tiptap\Editor)->setContent($raw)->getHTML();
